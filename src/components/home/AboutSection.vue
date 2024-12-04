@@ -10,7 +10,7 @@
           </span>
         </div>
 
-        <span class="about-section-main__info--name" v-html="t('home.aboutSection.name')" />
+        <div class="about-section-main__info--name" v-html="t('home.aboutSection.name')" />
 
         <span class="about-section-main__info--resume">
           {{ t('home.aboutSection.resume') }}
@@ -70,24 +70,20 @@ const { t } = useI18n()
         gap: 10px;
 
         &-dash {
-          width: 25px;
+          width: 30px;
           height: 3px;
           background-color: var(--color-text);
         }
 
         &-text {
-          font-size: 24px;
+          font-size: 30px;
           font-weight: 700;
         }
       }
 
       &--name {
-        font-size: 54px;
-        font-weight: 400;
-
-        &-highlight {
-          font-weight: 500;
-        }
+        font-size: 60px;
+        font-weight: 300;
       }
 
       &--resume {

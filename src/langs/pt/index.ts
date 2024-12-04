@@ -6,7 +6,7 @@ export default {
   home: {
     aboutSection: {
       hello: 'Oi',
-      name: "Sou o <span class='about-section-main__info--name-highlight'>João Pedro Ennes</class>",
+      name: "Sou o <span style='font-weight: 500'>João Pedro Ennes</span>",
       resume:
         'Um Desenvolvedor Full Stack, formado em Sistemas de Informação pela UFMG e entusiasta de tecnologia.',
       scrollForMoreInfo: 'Entre em contato',

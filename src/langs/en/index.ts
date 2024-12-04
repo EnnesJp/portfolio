@@ -6,7 +6,7 @@ export default {
   home: {
     aboutSection: {
       hello: 'Hello',
-      name: "I\'m <span class='about-section-main__info--name-highlight'>João Pedro Ennes</class>",
+      name: "I\'m <span style='font-weight: 500'>João Pedro Ennes</span>",
       resume:
         'A Full Stack Software Developer, Bachelor of Information Systems from UFMG, and a tech enthusiast.',
       scrollForMoreInfo:
