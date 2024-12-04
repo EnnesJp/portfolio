@@ -14,7 +14,7 @@
         {{ t(`lang.${locale}`) }}
       </span>
     </div>
-    <!-- <Arrow class="language-selector-arrow"/> -->
+    <small-arrow class="language-selector-arrow"/>
   </div>
 
   <div
@@ -41,6 +41,7 @@
 </template>
 
 <script setup lang="ts">
+import { SmallArrow } from '@components'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -49,8 +50,8 @@ const openOptions = ref(false)
 const langs = ref(['en', 'pt'])
 
 const handleOpenOptions = () => {
-  // const arrow = document.querySelector('.language-selector-arrow')
-  // arrow.classList.toggle('up')
+  const arrow = document.querySelector('.language-selector-arrow')
+  arrow.classList.toggle('up')
   openOptions.value = !openOptions.value
 }
 
@@ -101,10 +102,14 @@ const changeLang = (lang) => {
     width: 10px;
     height: 10px;
     transition: .5s;
+
+    &.up {
+      transform: rotate(180deg);
+    }
   }
 
   &-wrapper {
-    background-color: var(--color-background-soft);
+    background-color: var(--color-background);
     position: absolute;
     right: 0;
     padding: 5px;

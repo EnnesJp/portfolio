@@ -63,6 +63,7 @@ const { t } = useI18n()
       display: flex;
       flex-direction: column;
       gap: 20px;
+      max-width: 60%;
 
       &--hello {
         display: flex;
@@ -101,7 +102,7 @@ const { t } = useI18n()
       background-image: url('@assets/images/self-img.jpeg');
       background-position: bottom center;
       background-size: cover;
-      width: 650px;
+      width: 380px;
       height: 500px;
     }
   }

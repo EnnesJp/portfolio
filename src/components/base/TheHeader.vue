@@ -28,12 +28,10 @@ const { t } = useI18n()
     justify-content: space-between;
     align-items: center;
     margin: 0 auto;
-    padding: 0 1rem;
   }
 
   &__logo {
     img {
-      margin-left: -20px;
       width: 180px;
     }
   }
