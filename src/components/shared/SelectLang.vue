@@ -51,11 +51,12 @@ const langs = ref(['en', 'pt'])
 
 const handleOpenOptions = () => {
   const arrow = document.querySelector('.language-selector-arrow')
-  arrow.classList.toggle('up')
+  arrow?.classList?.toggle('up')
+
   openOptions.value = !openOptions.value
 }
 
-const changeLang = (lang) => {
+const changeLang = (lang: string) => {
   locale.value = lang
   handleOpenOptions()
 }
