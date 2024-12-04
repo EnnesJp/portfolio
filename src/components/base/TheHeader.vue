@@ -4,11 +4,14 @@
       <div class="header__logo">
         <img src="@assets/images/logo-white.png" alt="Logo" />
       </div>
+
+      <select-lang />
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
+import { SelectLang } from '@components'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
