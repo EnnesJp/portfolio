@@ -6,29 +6,22 @@
                     <div class="about-section-main__info--hello-dash"/>
                     
                     <span class="about-section-main__info--hello-text">
-                        Hello
+                        {{ t('home.aboutSection.hello') }}
                     </span>
                 </div>
 
-                <span class="about-section-main__info--name">
-                    I'm João Pedro Ennes
-                </span>
+                <span class="about-section-main__info--name" v-html="t('home.aboutSection.name')" />
 
                 <span class="about-section-main__info--resume">
-                    A Full Stack Software Developer, Bachelor of Information Systems from UFMG, and a tech enthusiast.
+                    {{ t('home.aboutSection.resume') }}
                 </span>
                 
                 <span class="about-section-main__info--learn-more">
-                    Of course, there’s so much more to me than just a few fancy titles. Scroll down and get to know me,
+                    {{ t('home.aboutSection.scrollForMoreInfo') }}
                 </span>
             </div>
 
-            <div class="about-section-main__img">
-                <img
-                    src="@assets/images/self-img.png"
-                    alt="João Pedro Ennes"
-                />    
-            </div>
+            <div class="about-section-main__img" />
         </div>
 
         <div class="about-section-bottom">
@@ -52,6 +45,9 @@
 
 <script setup lang="ts">
 import Arrow from '@components/icons/Arrow.vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 </script>
 
 <style scoped lang="scss">
@@ -90,7 +86,11 @@ import Arrow from '@components/icons/Arrow.vue'
 
             &--name {
                 font-size: 54px;
-                font-weight: 500;
+                font-weight: 400;
+
+                &-highlight {
+                    font-weight: 500;
+                }
             }
 
             &--resume {
@@ -105,10 +105,11 @@ import Arrow from '@components/icons/Arrow.vue'
         }
 
         &__img {
-            img {
-                width: 450px;
-                height: 540px;
-            }
+            background-image: url('@assets/images/self-img.jpeg');
+            background-position: bottom center;
+            background-size: cover;
+            width: 650px;
+            height: 500px;
         }
     }
 
