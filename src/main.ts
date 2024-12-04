@@ -3,7 +3,7 @@ import '@/assets/main.css'
 import { createApp } from 'vue'
 import App from '@/App.vue'
 import router from '@/router'
-import { i18n } from '@/langs/lang' 
+import { i18n } from '@/langs'
 
 const app = createApp(App)
 

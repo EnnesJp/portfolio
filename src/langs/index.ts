@@ -4,10 +4,10 @@ import pt from './pt'
 
 const messages = {
   en,
-  pt
-};
+  pt,
+}
 
 export const i18n = createI18n({
   locale: 'en',
   messages,
-});
+})
