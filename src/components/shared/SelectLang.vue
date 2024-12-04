@@ -6,7 +6,7 @@
     <div class="language-selector-lang">
       <img
         class="language-selector-lang__icon"
-        :src="`src/assets/images/langs/${locale}.png`"
+        :src="`/portfolio/images/flags/${locale}.png`"
         alt="flag"
       >
       
@@ -29,7 +29,7 @@
     >
       <img
         class="language-selector-option__icon"
-        :src="`src/assets/images/langs/${lang}.png`"
+        :src="`/portfolio/images/flags/${lang}.png`"
         alt="flag"
       >
 
