@@ -32,7 +32,7 @@ const { t } = useI18n()
 
   &__logo {
     img {
-      width: 180px;
+      width: 250px;
     }
   }
 

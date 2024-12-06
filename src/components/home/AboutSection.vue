@@ -26,7 +26,16 @@
 
     <div class="about-section-bottom">
       <div class="about-section-bottom__social-medias">
-        <img src="@assets/images/icons/linkedin.svg" alt="Linkedin" />
+        <img
+          src="@assets/images/icons/linkedin.svg"
+          alt="Linkedin"
+          @click="goToSocialMedia(LINKEDIN_URL)"
+        />
+        <img
+          src="@assets/images/icons/github.svg"
+          alt="Github"
+          @click="goToSocialMedia(GITHUB_URL)"
+        />
       </div>
 
       <div class="about-section-bottom__scroll">
@@ -45,6 +54,12 @@ import { Arrow } from '@components'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+const LINKEDIN_URL = 'https://www.linkedin.com/in/joao-pedro-ennes/'
+const GITHUB_URL = 'https://github.com/EnnesJp'
+
+const goToSocialMedia = (url: string) => {
+  window.open(url, '_blank')
+}
 </script>
 
 <style scoped lang="scss">
@@ -118,6 +133,7 @@ const { t } = useI18n()
       gap: 32px;
 
       img {
+        cursor: pointer;
         width: 20px;
         height: 20px;
       }
