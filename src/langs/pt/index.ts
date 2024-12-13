@@ -3,6 +3,10 @@ export default {
     en: 'Inglês',
     pt: 'Português',
   },
+  common: {
+    readMore: 'Saiba mais',
+    scroll: 'SCROLL',
+  },
   home: {
     aboutSection: {
       hello: 'Oi',

@@ -24,18 +24,18 @@ import { ref } from 'vue'
 const { t } = useI18n()
 const hardSkills = ref([
   {
-    title: t('home.hardSkillsSection.skills.frontend.title'),
-    description: t('home.hardSkillsSection.skills.frontend.description'),
+    title: 'home.hardSkillsSection.skills.frontend.title',
+    description: 'home.hardSkillsSection.skills.frontend.description',
     link: '/frontend'
   },
   {
-    title: t('home.hardSkillsSection.skills.backend.title'),
-    description: t('home.hardSkillsSection.skills.backend.description'),
+    title: 'home.hardSkillsSection.skills.backend.title',
+    description: 'home.hardSkillsSection.skills.backend.description',
     link: '/backend'
   },
   {
-    title: t('home.hardSkillsSection.skills.devops.title'),
-    description: t('home.hardSkillsSection.skills.devops.description'),
+    title: 'home.hardSkillsSection.skills.devops.title',
+    description: 'home.hardSkillsSection.skills.devops.description',
     link: '/devops'
   }
 ])

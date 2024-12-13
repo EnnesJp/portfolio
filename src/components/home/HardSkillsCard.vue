@@ -2,17 +2,17 @@
   <div class="hard-skills-card">
     <div class="hard-skills-card__info">
       <span class="hard-skills-card__info--title">
-        {{ title }}
+        {{ t(title) }}
       </span>
 
       <span class="hard-skills-card__info--description">
-        {{ description }}
+        {{ t(description) }}
       </span>
     </div>
 
     <div class="hard-skills-card__read-more">
       <span class="hard-skills-card__read-more--text">
-        Read more
+        {{ t('common.readMore') }}
       </span>
 
       <arrow class="hard-skills-card__read-more--icon"/>
@@ -22,6 +22,7 @@
 
 <script setup lang="ts">
 import { Arrow } from '@components'
+import { useI18n } from 'vue-i18n'
 
 type Props = {
   title: string
@@ -30,6 +31,7 @@ type Props = {
 }
 
 defineProps<Props>()
+const { t } = useI18n()
 </script>
 
 <style scoped lang="scss">

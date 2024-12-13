@@ -39,7 +39,9 @@
       </div>
 
       <div class="about-section-bottom__scroll">
-        <span>SCROLL</span>
+        <span>
+          {{ t('common.scroll') }}
+        </span>
 
         <arrow />
       </div>
@@ -125,12 +127,15 @@ const goToSocialMedia = (url: string) => {
   &-bottom {
     display: flex;
     margin-top: 56px;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
+    position: relative;
 
     &__social-medias {
       display: flex;
       gap: 32px;
+      position: absolute;
+      left: 0;
 
       img {
         cursor: pointer;
