@@ -23,7 +23,7 @@ export default {
           title: 'Backend',
           description: 'Development of APIs and web services with modern technologies.',
         },
-        aws: {
+        devops: {
           title: 'AWS',
           description: 'Configuration and management of cloud services.',
         },
