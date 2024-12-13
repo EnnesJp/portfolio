@@ -71,7 +71,7 @@ const goToSocialMedia = (url: string) => {
 
   &-main {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     gap: 71px;
 
     &__info {
@@ -146,7 +146,7 @@ const goToSocialMedia = (url: string) => {
       gap: 10px;
 
       span {
-        font-size: 18px;
+        font-size: 14px;
         font-weight: 300;
       }
     }

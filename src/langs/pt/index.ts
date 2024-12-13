@@ -11,5 +11,22 @@ export default {
         'Um Desenvolvedor Full Stack, formado em Sistemas de Informação pela UFMG e entusiasta de tecnologia.',
       scrollForMoreInfo: 'Claro, há muito mais para mim do que apenas alguns títulos sofisticados. Role para baixo e me conheça.',
     },
+    hardSkillsSection: {
+      title: 'O que eu faço',
+      skills: {
+        frontend: {
+          title: 'Frontend',
+          description: 'Desenvolvimento de interfaces de usuário com tecnologias modernas.',
+        },
+        backend: {
+          title: 'Backend',
+          description: 'Desenvolvimento de APIs e serviços web com tecnologias modernas.',
+        },
+        aws: {
+          title: 'AWS',
+          description: 'Configuração e gerenciamento de serviços em nuvem.',
+        },
+      },
+    },
   },
 }

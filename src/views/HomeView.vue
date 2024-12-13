@@ -1,9 +1,10 @@
 <template>
   <main>
     <about-section />
+    <hard-skills-section />
   </main>
 </template>
 
 <script setup lang="ts">
-import { AboutSection } from '@components'
+import { AboutSection, HardSkillsSection } from '@components'
 </script>

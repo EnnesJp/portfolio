@@ -21,7 +21,7 @@ const { t } = useI18n()
 .header {
   width: 100%;
   padding-top: 16px;
-  padding-bottom: 48px;
+  padding-bottom: 64px;
 
   &__container {
     display: flex;

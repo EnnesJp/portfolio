@@ -12,5 +12,22 @@ export default {
       scrollForMoreInfo:
         'Of course, there’s so much more to me than just a few fancy titles. Scroll down and get to know me.',
     },
+    hardSkillsSection: {
+      title: 'What I do',
+      skills: {
+        frontend: {
+          title: 'Frontend',
+          description: 'Development of user interfaces with modern technologies.',
+        },
+        backend: {
+          title: 'Backend',
+          description: 'Development of APIs and web services with modern technologies.',
+        },
+        aws: {
+          title: 'AWS',
+          description: 'Configuration and management of cloud services.',
+        },
+      },
+    },
   },
 }
