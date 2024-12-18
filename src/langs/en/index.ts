@@ -33,5 +33,14 @@ export default {
         },
       },
     },
+    contactSection: {
+      title: 'Hire Me For Your Next Amazing Project',
+      description: 'Let’s make somthing new, different and more meaningful or make thing more visual or conceptual? Just say hello!',
+      socialInfos: {
+        phone: '+55 31 9 9999-9999',
+        email: 'joaopedroennes@outlook.com',
+        location: 'Belo Horizonte, MG, Brazil',
+      },
+    }
   },
 }

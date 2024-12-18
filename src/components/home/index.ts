@@ -1,3 +1,5 @@
 export { default as AboutSection } from './AboutSection.vue'
 export { default as HardSkillsSection } from './HardSkillsSection.vue'
 export { default as HardSkillsCard } from './HardSkillsCard.vue'
+export { default as ContactSection } from './ContactSection.vue'
+export { default as ContactForm } from './ContactForm.vue'
