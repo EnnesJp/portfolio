@@ -32,5 +32,19 @@ export default {
         },
       },
     },
+    contactSection: {
+      title: 'Contrate-me para seu próximo projeto incrível',
+      description: 'Vamos fazer algo novo, diferente e mais significativo ou tornar algo mais visual ou conceitual? Basta dizer oi!',
+      socialInfos: {
+        location: 'Belo Horizonte, MG, Brasil',
+      },
+      fields: {
+        name: 'Nome',
+        email: 'Email',
+        budget: 'Budget (Opcional)',
+        description: 'Descrição do projeto',
+        send: 'Enviar',
+      },
+    }
   },
 }

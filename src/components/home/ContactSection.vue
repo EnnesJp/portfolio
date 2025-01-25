@@ -11,7 +11,7 @@
                         v-for="info in socialInfos"
                         class="contact-section__info--social-info"    
                     >
-                        <div class="contact-section__info--social-info-sdash"/>
+                        <div class="contact-section__info--social-info-dash"/>
                     
                         <span class="contact-section__info--social-info-text">
                             {{ info }}
@@ -35,8 +35,8 @@ import { ref } from 'vue';
 const { t } = useI18n()
 
 const socialInfos = ref([
-    t('home.contactSection.socialInfos.phone'),
-    t('home.contactSection.socialInfos.email'),
+    import.meta.env.VITE_CONTACT_PHONE,
+    import.meta.env.VITE_CONTACT_EMAIL,
     t('home.contactSection.socialInfos.location')
 ])
 </script>
@@ -51,8 +51,10 @@ const socialInfos = ref([
         width: 50%;
         justify-content: space-between;
         flex-direction: column;
-        margin: auto;
         max-width: 400px;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 60px;
 
         &--description {
             font-size: 26px;
@@ -73,7 +75,7 @@ const socialInfos = ref([
                 align-items: center;
                 gap: 10px;
 
-                &-sdash {
+                &-dash {
                     width: 15px;
                     height: 1px;
                     background-color: #333333;
