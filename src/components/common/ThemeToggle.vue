@@ -56,35 +56,58 @@ const { toggleTheme } = themeStore
   height: 40px;
   border: none;
   border-radius: 8px;
-  background-color: var(--color-surface);
+  background-color: transparent;
   color: var(--color-text);
   cursor: pointer;
-  transition: all 0.2s ease;
-  
-  &:hover {
-    background-color: var(--color-border);
-    transform: scale(1.05);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-surface);
+    transform: translateY(-1px);
   }
-  
-  &:active {
-    transform: scale(0.95);
+
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.95);
   }
-  
+
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
   }
-  
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
   &__icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
-  
-  &:hover &__icon {
-    transform: rotate(15deg);
+
+  &:hover:not(:disabled) &__icon {
+    transform: rotate(20deg) scale(1.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle {
+    transition: none;
+
+    &__icon {
+      transition: none;
+    }
+
+    &:hover:not(:disabled) {
+      transform: none;
+    }
+
+    &:hover:not(:disabled) &__icon {
+      transform: none;
+    }
   }
 }
 </style>

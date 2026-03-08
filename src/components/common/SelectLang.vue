@@ -3,23 +3,20 @@
     ref="selectorRef"
     class="language-selector"
     @click="handleOpenOptions"
-    :class="{ 'changing': languageStore.isChanging }"
+    :class="{ changing: languageStore.isChanging }"
   >
     <div class="language-selector-lang">
       <img
         class="language-selector-lang__icon"
         :src="`/portfolio/images/flags/${languageStore.currentLanguageConfig.flag}`"
         :alt="`${languageStore.currentLanguageConfig.name} flag`"
-      >
-      
+      />
+
       <span class="language-selector-lang__text">
         {{ languageStore.currentLanguageConfig.name }}
       </span>
     </div>
-    <small-arrow 
-      class="language-selector-arrow"
-      :class="{ 'up': openOptions }"
-    />
+    <small-arrow class="language-selector-arrow" :class="{ up: openOptions }" />
 
     <div
       ref="dropdownRef"
@@ -32,13 +29,13 @@
         v-for="lang in languageStore.availableLanguages"
         :key="lang.code"
         @click="changeLang(lang.code)"
-        :class="{ 'active': lang.code === languageStore.currentLanguage }"
+        :class="{ active: lang.code === languageStore.currentLanguage }"
       >
         <img
           class="language-selector-option__icon"
           :src="`/portfolio/images/flags/${lang.flag}`"
           :alt="`${lang.name} flag`"
-        >
+        />
 
         <span class="language-selector-option__text">
           {{ lang.name }}
@@ -61,59 +58,63 @@ const dropdownRef = ref<HTMLElement>()
 
 const dropdownStyle = computed(() => {
   if (!openOptions.value || !selectorRef.value) return {}
-  
+
   const rect = selectorRef.value.getBoundingClientRect()
   const viewportHeight = window.innerHeight
   const viewportWidth = window.innerWidth
-  
+
   const spaceAbove = rect.top
   const spaceBelow = viewportHeight - rect.bottom
-  
+
   const optionHeight = 44
   const dropdownPadding = 16
-  const estimatedDropdownHeight = (languageStore.availableLanguages.length * optionHeight) + dropdownPadding
-  
-  const shouldShowAbove = spaceBelow < estimatedDropdownHeight && spaceAbove > estimatedDropdownHeight
-  
+  const estimatedDropdownHeight =
+    languageStore.availableLanguages.length * optionHeight + dropdownPadding
+
+  const shouldShowAbove =
+    spaceBelow < estimatedDropdownHeight && spaceAbove > estimatedDropdownHeight
+
   const dropdownWidth = 160
   let left = 0
-  
+
   if (rect.right > viewportWidth - dropdownWidth) {
     left = rect.width - dropdownWidth
   }
-  
+
   const style: Record<string, string> = {
     position: 'absolute',
     width: '160px',
-    zIndex: '1000'
+    zIndex: '1001',
   }
-  
+
   if (shouldShowAbove) {
     style.bottom = '100%'
-    style.marginBottom = '8px'
+    style.marginBottom = '12px'
   } else {
     style.top = '100%'
-    style.marginTop = '8px'
+    style.marginTop = '12px'
   }
-  
+
   if (left !== 0) {
     style.right = '0'
   } else {
     style.left = '0'
   }
-  
+
   return style
 })
 
 const handleOpenOptions = async () => {
   if (languageStore.isChanging) return
-  
+
   openOptions.value = !openOptions.value
-  
+
   if (openOptions.value) {
     await nextTick()
     if (dropdownRef.value) {
-      const activeOption = dropdownRef.value.querySelector('.language-selector-option.active') as HTMLElement
+      const activeOption = dropdownRef.value.querySelector(
+        '.language-selector-option.active',
+      ) as HTMLElement
       if (activeOption) {
         activeOption.focus()
       }
@@ -125,7 +126,7 @@ const changeLang = async (lang: SupportedLanguage) => {
   if (languageStore.isChanging || lang === languageStore.currentLanguage) {
     return
   }
-  
+
   try {
     await languageStore.setLanguage(lang)
     openOptions.value = false
@@ -150,10 +151,10 @@ const handleEscapeKey = (event: KeyboardEvent) => {
 
 const handleKeyNavigation = (event: KeyboardEvent) => {
   if (!openOptions.value) return
-  
+
   const options = Array.from(dropdownRef.value?.querySelectorAll('.language-selector-option') || [])
-  const currentIndex = options.findIndex(option => option.classList.contains('active'))
-  
+  const currentIndex = options.findIndex((option) => option.classList.contains('active'))
+
   switch (event.key) {
     case 'ArrowDown':
       event.preventDefault()
@@ -195,12 +196,13 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  padding: 10px 10px;
-  border-radius: 10px;
-  gap: 20px;
-  min-width: 160px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  gap: 12px;
+  min-width: 140px;
   position: relative;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background-color: transparent;
 
   &.changing {
     opacity: 0.6;
@@ -208,9 +210,7 @@ onUnmounted(() => {
   }
 
   &:hover:not(.changing) {
-    color: var(--color-nav-text);
-    line-height: 24px;
-    text-decoration-line: underline;
+    background-color: var(--color-surface);
   }
 
   &:focus-visible {
@@ -221,32 +221,34 @@ onUnmounted(() => {
   &-lang {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 
     &__icon {
       width: 20px;
       height: 20px;
-      border-radius: 2px;
+      border-radius: 3px;
       object-fit: cover;
       flex-shrink: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
     &__text {
-      color: var(--color-nav-text);
-      text-shadow: 0px 8px 16px 0px var(--color-nav-text-shadow);
-      font-size: 16px;
+      color: var(--color-text);
+      font-size: 15px;
       font-style: normal;
       font-weight: 500;
-      line-height: 24px;
+      line-height: 20px;
       white-space: nowrap;
+      transition: color 0.3s ease;
     }
   }
 
   &-arrow {
     width: 10px;
     height: 10px;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     flex-shrink: 0;
+    opacity: 0.7;
 
     &.up {
       transform: rotate(180deg);
@@ -256,17 +258,20 @@ onUnmounted(() => {
   &-wrapper {
     background-color: var(--color-background);
     padding: 8px;
-    border-radius: 10px;
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
-    box-shadow: var(--shadow-medium);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.12),
+      0 2px 8px rgba(0, 0, 0, 0.08);
     border: 1px solid var(--color-border);
-    backdrop-filter: blur(10px);
-    animation: dropdownFadeIn 0.2s ease-out;
-    
-    // Ensure dropdown appears above other elements
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    animation: dropdownFadeIn 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
     position: absolute;
-    z-index: 1000;
+    z-index: 1001;
+    min-width: 160px;
   }
 
   &-option {
@@ -274,14 +279,15 @@ onUnmounted(() => {
     align-items: center;
     gap: 10px;
     cursor: pointer;
-    padding: 8px 12px;
+    padding: 10px 12px;
     border-radius: 8px;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     outline: none;
-    
+
     &:hover,
     &:focus {
       background-color: var(--color-surface);
+      transform: translateX(2px);
     }
 
     &:focus-visible {
@@ -291,32 +297,34 @@ onUnmounted(() => {
 
     &.active {
       background-color: var(--color-primary);
-      
+
       .language-selector-option__text {
         color: white;
         font-weight: 600;
       }
-      
+
       &:hover,
       &:focus {
         background-color: var(--color-accent);
+        transform: translateX(2px);
       }
     }
 
     &__icon {
       width: 20px;
       height: 20px;
-      border-radius: 2px;
+      border-radius: 3px;
       object-fit: cover;
       flex-shrink: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
     &__text {
       color: var(--color-text);
-      font-size: 16px;
+      font-size: 15px;
       font-style: normal;
       font-weight: 500;
-      line-height: 24px;
+      line-height: 20px;
       transition: color 0.2s ease;
       white-space: nowrap;
     }
@@ -326,11 +334,11 @@ onUnmounted(() => {
 @keyframes dropdownFadeIn {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-10px) scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -347,7 +355,7 @@ onUnmounted(() => {
     &-wrapper {
       border-width: 2px;
     }
-    
+
     &-option {
       &:focus-visible {
         outline-width: 3px;
@@ -362,11 +370,11 @@ onUnmounted(() => {
     &-arrow {
       transition: none;
     }
-    
+
     &-wrapper {
       animation: none;
     }
-    
+
     &-option {
       transition: none;
     }

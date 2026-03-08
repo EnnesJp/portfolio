@@ -1,10 +1,5 @@
 <template>
-  <header
-    ref="headerRef"
-    class="header"
-    :class="{ 'header--transparent': transparent, 'header--fixed': fixed }"
-    role="banner"
-  >
+  <header ref="headerRef" class="header" :class="headerClasses" role="banner">
     <responsive-container size="xl">
       <div class="header__container">
         <nav
@@ -111,8 +106,9 @@ import { useI18n } from 'vue-i18n'
 import { useNavigationStore } from '@/stores/navigation'
 import { useThemeStore } from '@/stores/theme'
 import { useResponsiveNavigation } from '@/composables/useResponsive'
+import { useScrollDetection } from '@/composables/useScrollDetection'
 import { storeToRefs } from 'pinia'
-import { onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
+import { onMounted, onUnmounted, ref, watch, nextTick, computed } from 'vue'
 
 interface Props {
   transparent?: boolean
@@ -146,6 +142,15 @@ const themeStore = useThemeStore()
 
 const { currentSection, visibleSections } = storeToRefs(navigationStore)
 const { scrollToSection } = navigationStore
+
+const { isFloating, scrollY } = useScrollDetection()
+
+const headerClasses = computed(() => ({
+  'header--transparent': props.transparent,
+  'header--fixed': props.fixed,
+  'header--floating': isFloating.value,
+  'header--scrolled': scrollY.value > 0,
+}))
 
 const handleMobileNavClick = (sectionId: string) => {
   scrollToSection(sectionId)
@@ -214,8 +219,12 @@ onUnmounted(() => {
   padding: var(--container-padding) 0;
   background-color: var(--color-background);
   border-bottom: 1px solid var(--color-border);
-  transition: all var(--transition-medium);
   z-index: var(--z-fixed);
+
+  transition-property: padding, background-color, backdrop-filter, border-color, box-shadow,
+    transform, opacity;
+  transition-duration: 500ms;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
   &--transparent {
     background-color: transparent;
@@ -227,6 +236,33 @@ onUnmounted(() => {
     top: 0;
     left: 0;
     right: 0;
+  }
+
+  &--floating {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: var(--header-padding-floating) 0;
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    transform: translateZ(0) scale(1);
+    z-index: var(--z-fixed);
+
+    @supports not (backdrop-filter: blur(10px)) {
+      background-color: var(--color-background);
+      opacity: 0.95;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    @supports not (-webkit-backdrop-filter: blur(10px)) {
+      background-color: var(--color-background);
+      opacity: 0.95;
+      border-bottom: 1px solid var(--color-border);
+    }
   }
 
   &__container {
@@ -476,7 +512,27 @@ onUnmounted(() => {
 
 @media (prefers-reduced-motion: reduce) {
   .header {
+    transition-duration: 0ms;
+    transition-property: none;
+    will-change: auto;
+
+    &__nav-link {
+      transition: none;
+
+      &::after {
+        transition: none;
+      }
+    }
+
     &__mobile-menu {
+      transition: none;
+    }
+
+    &__mobile-menu-toggle {
+      transition: none;
+    }
+
+    &__mobile-overlay {
       transition: none;
     }
 
