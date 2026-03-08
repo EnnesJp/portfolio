@@ -8,19 +8,23 @@
         <p class="companies-section__subtitle">
           {{ t('home.companiesSection.subtitle') }}
         </p>
-        
+
         <div class="companies-section__controls" v-if="companies.length > 0">
           <div class="companies-section__display-toggle">
-            <button 
+            <div
+              class="companies-section__toggle-slider"
+              :class="{ 'companies-section__toggle-slider--grid': displayMode === 'grid' }"
+            ></div>
+            <button
               class="companies-section__toggle-btn"
-              :class="{ 'active': displayMode === 'timeline' }"
+              :class="{ active: displayMode === 'timeline' }"
               @click="setDisplayMode('timeline')"
             >
               {{ t('home.companiesSection.displayMode.timeline') }}
             </button>
-            <button 
+            <button
               class="companies-section__toggle-btn"
-              :class="{ 'active': displayMode === 'grid' }"
+              :class="{ active: displayMode === 'grid' }"
               @click="setDisplayMode('grid')"
             >
               {{ t('home.companiesSection.displayMode.grid') }}
@@ -30,48 +34,34 @@
       </div>
 
       <div class="companies-section__content" v-if="sortedCompanies.length > 0">
-        <div 
-          v-if="displayMode === 'timeline'" 
-          class="companies-section__timeline"
-        >
+        <div v-if="displayMode === 'timeline'" class="companies-section__timeline">
           <div class="companies-section__timeline-line"></div>
-          <div 
-            v-for="(company, index) in sortedCompanies" 
+          <div
+            v-for="(company, index) in sortedCompanies"
             :key="company.id"
             class="companies-section__timeline-item"
             :class="{ 'companies-section__timeline-item--alternate': index % 2 === 1 }"
           >
             <div class="companies-section__timeline-marker"></div>
             <div class="companies-section__company-card companies-section__company-card--timeline">
-              <CompanyCard 
-                :company="company" 
-                :view-mode="'timeline'"
-              />
+              <CompanyCard :company="company" :view-mode="'timeline'" />
             </div>
           </div>
         </div>
 
-        <div 
-          v-else 
-          class="companies-section__grid"
-        >
-          <div 
-            v-for="company in sortedCompanies" 
+        <div v-else class="companies-section__grid">
+          <div
+            v-for="company in sortedCompanies"
             :key="company.id"
             class="companies-section__company-card companies-section__company-card--grid"
           >
-            <CompanyCard 
-              :company="company" 
-              :view-mode="'grid'"
-            />
+            <CompanyCard :company="company" :view-mode="'grid'" />
           </div>
         </div>
       </div>
 
       <div v-else class="companies-section__empty">
-        <p class="companies-section__empty-text">
-          No companies to display yet.
-        </p>
+        <p class="companies-section__empty-text">No companies to display yet.</p>
       </div>
     </div>
   </section>
@@ -107,15 +97,17 @@ const setDisplayMode = (mode: 'timeline' | 'grid') => {
 }
 
 const formatDate = (date: Date): string => {
-  return date.toLocaleDateString('en-US', { 
-    year: 'numeric', 
-    month: 'short' 
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
   })
 }
 
 const formatPeriod = (company: Company): string => {
   const start = formatDate(company.period.start)
-  const end = company.period.end ? formatDate(company.period.end) : t('home.companiesSection.company.current')
+  const end = company.period.end
+    ? formatDate(company.period.end)
+    : t('home.companiesSection.company.current')
   return `${start} - ${end}`
 }
 
@@ -127,7 +119,7 @@ onMounted(() => {
       label: t('navigation.companies'),
       order: 3,
       visible: true,
-      element: sectionElement
+      element: sectionElement,
     })
   }
 
@@ -176,6 +168,23 @@ onMounted(() => {
     border-radius: 8px;
     padding: 4px;
     border: 1px solid var(--color-border);
+    position: relative;
+  }
+
+  &__toggle-slider {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: calc(100% - 8px);
+    width: calc(50% - 4px);
+    background: var(--color-primary);
+    border-radius: 6px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+
+    &--grid {
+      transform: translateX(100%);
+    }
   }
 
   &__toggle-btn {
@@ -187,14 +196,16 @@ onMounted(() => {
     font-weight: 500;
     border-radius: 6px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: color 0.2s ease;
+    position: relative;
+    z-index: 1;
+    flex: 1;
 
     &:hover {
       color: var(--color-text);
     }
 
     &.active {
-      background: var(--color-primary);
       color: white;
     }
   }
@@ -229,7 +240,7 @@ onMounted(() => {
       }
 
       justify-content: flex-end;
-      
+
       .companies-section__company-card {
         margin-right: 60px;
         max-width: 400px;
@@ -237,7 +248,7 @@ onMounted(() => {
 
       &--alternate {
         justify-content: flex-start;
-        
+
         .companies-section__company-card {
           margin-right: 0;
           margin-left: 60px;
@@ -310,7 +321,7 @@ onMounted(() => {
 
       &-item {
         justify-content: flex-start !important;
-        
+
         .companies-section__company-card {
           margin-right: 0 !important;
           margin-left: 60px !important;
@@ -347,6 +358,15 @@ onMounted(() => {
       width: 200px;
     }
 
+    &__toggle-slider {
+      width: calc(100% - 8px);
+      height: calc(50% - 4px);
+
+      &--grid {
+        transform: translateY(100%);
+      }
+    }
+
     &__toggle-btn {
       padding: 10px 20px;
       font-size: 13px;
@@ -355,7 +375,7 @@ onMounted(() => {
     &__timeline {
       &-item {
         margin-bottom: 40px;
-        
+
         .companies-section__company-card {
           margin-left: 50px !important;
           max-width: calc(100% - 60px);
