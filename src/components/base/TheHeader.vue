@@ -111,9 +111,8 @@ import { useI18n } from 'vue-i18n'
 import { useNavigationStore } from '@/stores/navigation'
 import { useThemeStore } from '@/stores/theme'
 import { useResponsiveNavigation } from '@/composables/useResponsive'
-import { useAccessibility } from '@/composables/useAccessibility'
 import { storeToRefs } from 'pinia'
-import { computed, onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
+import { onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
 
 interface Props {
   transparent?: boolean
@@ -132,53 +131,31 @@ interface Emits {
 const emit = defineEmits<Emits>()
 
 const headerRef = ref<HTMLElement>()
-const mobileMenuRef = ref<HTMLElement>()
-const focusTrap = ref<ReturnType<typeof createFocusTrap> | null>(null)
 
 const { t } = useI18n()
 const {
   shouldShowMobileMenu,
   shouldShowDesktopMenu,
-  shouldShowMobileLayout,
   isMobileMenuOpen,
   toggleMobileMenu,
   closeMobileMenu,
 } = useResponsiveNavigation()
 
-const { createFocusTrap, addKeyboardNavigation, announce, getFocusableElements } =
-  useAccessibility()
-
 const navigationStore = useNavigationStore()
 const themeStore = useThemeStore()
 
 const { currentSection, visibleSections } = storeToRefs(navigationStore)
-const { currentTheme } = storeToRefs(themeStore)
-
 const { scrollToSection } = navigationStore
-
-const logoWhite = computed(() => new URL('@/assets/images/logo-white.png', import.meta.url).href)
-const logoDark = computed(() => new URL('@/assets/images/logo-dark.png', import.meta.url).href)
-
-const scrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-  announce(t('navigation.scrolledToTop'), 'polite')
-}
 
 const handleMobileNavClick = (sectionId: string) => {
   scrollToSection(sectionId)
   closeMobileMenu()
   emit('section-change', sectionId)
-
-  const sectionName = t(`navigation.${sectionId}`)
-  announce(t('navigation.navigatedTo', { section: sectionName }), 'polite')
 }
 
 const handleDesktopNavClick = (sectionId: string) => {
   scrollToSection(sectionId)
   emit('section-change', sectionId)
-
-  const sectionName = t(`navigation.${sectionId}`)
-  announce(t('navigation.navigatedTo', { section: sectionName }), 'polite')
 }
 
 const handleKeyDown = (event: KeyboardEvent) => {
@@ -192,60 +169,13 @@ const handleKeyDown = (event: KeyboardEvent) => {
   }
 }
 
-const setupFocusTrap = () => {
-  if (mobileMenuRef.value && isMobileMenuOpen.value) {
-    focusTrap.value = createFocusTrap(mobileMenuRef.value, {
-      initialFocus: '.header__mobile-nav-link',
-      returnFocus: true,
-      allowOutsideClick: true,
-    })
-    focusTrap.value.activate()
-  }
-}
-
-const teardownFocusTrap = () => {
-  if (focusTrap.value) {
-    focusTrap.value.deactivate()
-    focusTrap.value = null
-  }
-}
-
-const setupKeyboardNavigation = () => {
-  const desktopNav = headerRef.value?.querySelector('.header__nav-list')
-  if (desktopNav) {
-    addKeyboardNavigation(desktopNav as HTMLElement, {
-      orientation: 'horizontal',
-      enableArrowKeys: true,
-      enableHomeEnd: true,
-      wrap: true,
-    })
-  }
-
-  const mobileNav = mobileMenuRef.value?.querySelector('.header__mobile-nav-list')
-  if (mobileNav) {
-    addKeyboardNavigation(mobileNav as HTMLElement, {
-      orientation: 'vertical',
-      enableArrowKeys: true,
-      enableHomeEnd: true,
-      wrap: true,
-    })
-  }
-}
-
 watch(isMobileMenuOpen, async (isOpen) => {
   if (isOpen) {
     document.body.style.overflow = 'hidden'
 
     await nextTick()
-    setupFocusTrap()
-
-    announce(t('navigation.mobileMenuOpened'), 'polite')
   } else {
     document.body.style.overflow = ''
-
-    teardownFocusTrap()
-
-    announce(t('navigation.mobileMenuClosed'), 'polite')
   }
 })
 
@@ -267,15 +197,10 @@ watch(currentSection, (newSection, oldSection) => {
 
 onMounted(() => {
   document.addEventListener('keydown', handleKeyDown)
-
-  nextTick(() => {
-    setupKeyboardNavigation()
-  })
 })
 
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeyDown)
-  teardownFocusTrap()
 
   if (isMobileMenuOpen.value) {
     document.body.style.overflow = ''
