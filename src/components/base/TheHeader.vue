@@ -54,7 +54,9 @@
         </div>
       </div>
     </responsive-container>
+  </header>
 
+  <Teleport to="body">
     <div
       ref="mobileMenuRef"
       id="mobile-navigation"
@@ -66,6 +68,7 @@
       aria-modal="false"
       :aria-label="t('navigation.mobileMenu')"
     >
+      <div class="header__mobile-menu-handle" aria-hidden="true"></div>
       <nav class="header__mobile-nav" role="navigation" aria-label="Mobile navigation">
         <ul class="header__mobile-nav-list" role="menu">
           <li
@@ -96,7 +99,7 @@
       aria-hidden="true"
       role="presentation"
     ></div>
-  </header>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -104,7 +107,6 @@ import { SelectLang, ThemeToggle } from '@components'
 import { ResponsiveContainer } from '@/components/ui'
 import { useI18n } from 'vue-i18n'
 import { useNavigationStore } from '@/stores/navigation'
-import { useThemeStore } from '@/stores/theme'
 import { useResponsiveNavigation } from '@/composables/useResponsive'
 import { useScrollDetection } from '@/composables/useScrollDetection'
 import { storeToRefs } from 'pinia'
@@ -138,7 +140,6 @@ const {
 } = useResponsiveNavigation()
 
 const navigationStore = useNavigationStore()
-const themeStore = useThemeStore()
 
 const { currentSection, visibleSections } = storeToRefs(navigationStore)
 const { scrollToSection } = navigationStore
@@ -408,20 +409,40 @@ onUnmounted(() => {
     background-color: var(--color-background);
     border-top: 1px solid var(--color-border);
     transform: translateY(100%);
-    transition: transform var(--transition-medium);
-    z-index: calc(var(--z-fixed) + 1);
+    transition:
+      transform var(--transition-medium),
+      visibility 0s linear var(--transition-medium);
+    z-index: calc(var(--z-fixed) + 2);
     max-height: 80vh;
     overflow-y: auto;
+    overflow-x: hidden;
     border-radius: var(--border-radius) var(--border-radius) 0 0;
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+    visibility: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    top: auto;
 
     &--open {
       transform: translateY(0);
+      visibility: visible;
+      transition:
+        transform var(--transition-medium),
+        visibility 0s linear 0s;
+    }
+
+    &-handle {
+      width: 40px;
+      height: 4px;
+      background-color: var(--color-border);
+      border-radius: 2px;
+      margin: 0.75rem auto 0.5rem;
+      opacity: 0.6;
     }
   }
 
   &__mobile-nav {
-    padding: 1.5rem;
+    padding: 0.5rem 1.5rem 1.5rem;
 
     &-list {
       list-style: none;
@@ -473,7 +494,7 @@ onUnmounted(() => {
     opacity: 0;
     visibility: hidden;
     transition: all var(--transition-medium);
-    z-index: var(--z-fixed);
+    z-index: calc(var(--z-fixed) + 1);
 
     &--visible {
       opacity: 1;
