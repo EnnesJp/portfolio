@@ -1,5 +1,4 @@
 export { default as PresentationSection } from './PresentationSection.vue'
-export { default as AboutSection } from './AboutSection.vue'
 export { default as CompaniesSection } from './CompaniesSection.vue'
 export { default as CompanyCard } from './CompanyCard.vue'
 export { default as CertificationsSection } from './CertificationsSection.vue'

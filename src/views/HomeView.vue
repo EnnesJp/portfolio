@@ -1,7 +1,6 @@
 <template>
   <main>
     <presentation-section />
-    <about-section />
     <companies-section />
     <certifications-section />
     <hard-skills-section />
@@ -17,7 +16,6 @@ import { computed, onMounted, onUnmounted } from 'vue'
 import { useNavigationStore } from '@/stores/navigation'
 import {
   PresentationSection,
-  AboutSection,
   CompaniesSection,
   CertificationsSection,
   HardSkillsSection,

@@ -76,7 +76,8 @@ export default {
       greeting: 'Olá, eu sou',
       name: 'João Pedro Ennes',
       title: 'Desenvolvedor Full Stack',
-      summary: 'Apaixonado por criar experiências digitais incríveis com tecnologias modernas e código limpo.',
+      summary:
+        'Apaixonado por criar experiências digitais incríveis com tecnologias modernas e código limpo.',
       cta: {
         viewWork: 'Ver Meu Trabalho',
         getInTouch: 'Entre em Contato',
@@ -87,45 +88,6 @@ export default {
         typing: 'Animação de digitação',
         fadeIn: 'Animação de aparição',
         slideUp: 'Animação de deslizar para cima',
-      },
-    },
-    aboutSection: {
-      hello: 'Oi',
-      name: "Sou o <span style='font-weight: 500'>João Pedro Ennes</span>",
-      resume: 'Um Desenvolvedor Full Stack, formado em Sistemas de Informação pela UFMG e entusiasta de tecnologia.',
-      scrollForMoreInfo: 'Claro, há muito mais para mim do que apenas alguns títulos sofisticados. Role para baixo e me conheça.',
-      journey: {
-        title: 'Jornada Profissional',
-        subtitle: 'Meu caminho na tecnologia e desenvolvimento',
-        timeline: 'Visualização em Linha do Tempo',
-        education: 'Educação',
-        experience: 'Experiência',
-        achievement: 'Conquista',
-        current: 'Atual',
-        duration: 'Duração',
-        location: 'Localização',
-      },
-      values: {
-        title: 'Valores Fundamentais',
-        subtitle: 'O que me motiva como profissional',
-        innovation: 'Inovação',
-        quality: 'Qualidade',
-        collaboration: 'Colaboração',
-        learning: 'Aprendizado Contínuo',
-        integrity: 'Integridade',
-        excellence: 'Excelência',
-      },
-      interests: {
-        title: 'Interesses e Hobbies',
-        subtitle: 'O que gosto de fazer fora do trabalho',
-        technology: 'Tecnologia',
-        music: 'Música',
-        travel: 'Viagem',
-        photography: 'Fotografia',
-        gaming: 'Jogos',
-        reading: 'Leitura',
-        sports: 'Esportes',
-        cooking: 'Culinária',
       },
     },
     companiesSection: {
@@ -319,7 +281,8 @@ export default {
     contactSection: {
       title: 'Contrate-me para seu próximo projeto incrível',
       subtitle: 'Vamos criar algo extraordinário juntos',
-      description: 'Vamos fazer algo novo, diferente e mais significativo ou tornar algo mais visual ou conceitual? Basta dizer oi!',
+      description:
+        'Vamos fazer algo novo, diferente e mais significativo ou tornar algo mais visual ou conceitual? Basta dizer oi!',
       socialInfos: {
         location: 'Belo Horizonte, MG, Brasil',
         timezone: 'UTC-3 (Horário de Brasília)',

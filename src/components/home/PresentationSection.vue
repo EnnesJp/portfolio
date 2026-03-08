@@ -45,18 +45,19 @@
           </p>
 
           <div class="presentation-section__cta">
-            <button
-              class="presentation-section__cta-button presentation-section__cta-button--primary"
-              @click="scrollToSection('projects')"
-            >
-              {{ t('home.presentationSection.cta.viewWork') }}
-            </button>
-            <button
-              class="presentation-section__cta-button presentation-section__cta-button--secondary"
-              @click="scrollToSection('contact')"
-            >
-              {{ t('home.presentationSection.cta.getInTouch') }}
-            </button>
+            <img
+              src="@assets/images/icons/linkedin.svg"
+              alt="Linkedin"
+              loading="lazy"
+              @click="goToSocialMedia(LINKEDIN_URL)"
+              class="presentation-section__cta-button"
+            />
+            <img
+              src="@assets/images/icons/github.svg"
+              alt="Github"
+              @click="goToSocialMedia(GITHUB_URL)"
+              class="presentation-section__cta-button"
+            />
           </div>
         </div>
 
@@ -90,7 +91,7 @@ import { useI18n } from 'vue-i18n'
 import { usePortfolioStore } from '@/stores/portfolio'
 import { useNavigationStore } from '@/stores/navigation'
 import { storeToRefs } from 'pinia'
-import { computed, onMounted, onUnmounted, ref, nextTick } from 'vue'
+import { computed, onMounted, ref, nextTick } from 'vue'
 
 const { t } = useI18n()
 const portfolioStore = usePortfolioStore()
@@ -104,8 +105,11 @@ const isTypingComplete = ref(false)
 const presentationData = computed(() => portfolioData.value?.presentation)
 const defaultAvatar = computed(() => new URL('@/assets/images/self-img.jpeg', import.meta.url).href)
 
-const scrollToSection = (sectionId: string) => {
-  navigationStore.scrollToSection(sectionId)
+const LINKEDIN_URL = 'https://www.linkedin.com/in/joao-pedro-ennes/'
+const GITHUB_URL = 'https://github.com/EnnesJp'
+
+const goToSocialMedia = (url: string) => {
+  window.open(url, '_blank')
 }
 
 const startTypingAnimation = async () => {
@@ -306,37 +310,16 @@ onMounted(() => {
     animation: slideInLeft 0.8s ease-out 1s forwards;
 
     &-button {
-      padding: 16px 32px;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
+      width: 24px;
+      height: 24px;
+      transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
 
-      &--primary {
-        background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-        color: white;
-        border: 2px solid transparent;
-
-        &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
-        }
-      }
-
-      &--secondary {
-        background: transparent;
-        color: var(--color-text);
-        border: 2px solid var(--color-border);
-
-        &:hover {
-          background: var(--color-surface);
-          border-color: var(--color-primary);
-          transform: translateY(-2px);
-        }
+      &:hover {
+        transform: scale(1.2);
+        opacity: 0.8;
       }
     }
   }
@@ -557,11 +540,6 @@ onMounted(() => {
     &__cta {
       justify-content: center;
       flex-wrap: wrap;
-
-      &-button {
-        padding: 14px 28px;
-        font-size: 14px;
-      }
     }
 
     &__image {
@@ -594,13 +572,6 @@ onMounted(() => {
 
     &__cta {
       gap: 16px;
-
-      &-button {
-        padding: 12px 24px;
-        font-size: 13px;
-        flex: 1;
-        min-width: 140px;
-      }
     }
 
     &__image {

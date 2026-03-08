@@ -73,10 +73,11 @@ export default {
   },
   home: {
     presentationSection: {
-      greeting: 'Hello, I\'m',
+      greeting: "Hello, I'm",
       name: 'João Pedro Ennes',
       title: 'Full Stack Developer',
-      summary: 'Passionate about creating amazing digital experiences with modern technologies and clean code.',
+      summary:
+        'Passionate about creating amazing digital experiences with modern technologies and clean code.',
       cta: {
         viewWork: 'View My Work',
         getInTouch: 'Get In Touch',
@@ -89,48 +90,9 @@ export default {
         slideUp: 'Slide up animation',
       },
     },
-    aboutSection: {
-      hello: 'Hello',
-      name: "I\'m <span style='font-weight: 500'>João Pedro Ennes</span>",
-      resume: 'A Full Stack Software Developer, Bachelor of Information Systems from UFMG, and a tech enthusiast.',
-      scrollForMoreInfo: "Of course, there's so much more to me than just a few fancy titles. Scroll down and get to know me.",
-      journey: {
-        title: 'Professional Journey',
-        subtitle: 'My path in technology and development',
-        timeline: 'Timeline View',
-        education: 'Education',
-        experience: 'Experience',
-        achievement: 'Achievement',
-        current: 'Current',
-        duration: 'Duration',
-        location: 'Location',
-      },
-      values: {
-        title: 'Core Values',
-        subtitle: 'What drives me as a professional',
-        innovation: 'Innovation',
-        quality: 'Quality',
-        collaboration: 'Collaboration',
-        learning: 'Continuous Learning',
-        integrity: 'Integrity',
-        excellence: 'Excellence',
-      },
-      interests: {
-        title: 'Interests & Hobbies',
-        subtitle: 'What I enjoy outside of work',
-        technology: 'Technology',
-        music: 'Music',
-        travel: 'Travel',
-        photography: 'Photography',
-        gaming: 'Gaming',
-        reading: 'Reading',
-        sports: 'Sports',
-        cooking: 'Cooking',
-      },
-    },
     companiesSection: {
       title: 'Professional Experience',
-      subtitle: 'Companies I\'ve worked with',
+      subtitle: "Companies I've worked with",
       displayMode: {
         timeline: 'Timeline View',
         grid: 'Grid View',
@@ -318,8 +280,9 @@ export default {
     },
     contactSection: {
       title: 'Hire Me For Your Next Amazing Project',
-      subtitle: 'Let\'s create something extraordinary together',
-      description: "Let's make something new, different and more meaningful or make thing more visual or conceptual? Just say hello!",
+      subtitle: "Let's create something extraordinary together",
+      description:
+        "Let's make something new, different and more meaningful or make thing more visual or conceptual? Just say hello!",
       socialInfos: {
         location: 'Belo Horizonte, MG, Brazil',
         timezone: 'UTC-3 (Brasília Time)',
@@ -356,7 +319,7 @@ export default {
       },
       form: {
         title: 'Send me a message',
-        subtitle: 'I\'ll get back to you as soon as possible',
+        subtitle: "I'll get back to you as soon as possible",
       },
       fields: {
         name: 'Your name',
@@ -376,7 +339,7 @@ export default {
         medium: '$5,000 - $15,000',
         large: '$15,000 - $50,000',
         enterprise: '$50,000+',
-        discuss: 'Let\'s discuss',
+        discuss: "Let's discuss",
       },
       validation: {
         nameRequired: 'Name is required',
@@ -398,7 +361,7 @@ export default {
       },
       notifications: {
         successTitle: 'Message Sent!',
-        successMessage: 'Thank you for reaching out. I\'ll get back to you soon.',
+        successMessage: "Thank you for reaching out. I'll get back to you soon.",
         errorTitle: 'Error',
         errorMessage: 'Failed to send message. Please try again later.',
         copySuccess: 'Email copied to clipboard!',
