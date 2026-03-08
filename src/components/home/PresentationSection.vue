@@ -3,15 +3,15 @@
     <div class="presentation-section__background">
       <div class="presentation-section__background-gradient"></div>
       <div class="presentation-section__background-particles">
-        <div 
-          v-for="i in 20" 
-          :key="i" 
+        <div
+          v-for="i in 20"
+          :key="i"
           class="presentation-section__background-particle"
-          :style="{ 
+          :style="{
             '--delay': `${i * 0.2}s`,
             '--duration': `${3 + (i % 3)}s`,
             '--x': `${Math.random() * 100}%`,
-            '--y': `${Math.random() * 100}%`
+            '--y': `${Math.random() * 100}%`,
           }"
         ></div>
       </div>
@@ -28,13 +28,12 @@
           </div>
 
           <h1 class="presentation-section__name">
-            <span 
-              ref="nameElement"
-              class="presentation-section__name-text"
-            >
+            <span ref="nameElement" class="presentation-section__name-text">
               {{ presentationData?.name || t('home.presentationSection.name') }}
             </span>
-            <span class="presentation-section__name-cursor" :class="{ 'blinking': isTypingComplete }">|</span>
+            <span class="presentation-section__name-cursor" :class="{ blinking: isTypingComplete }"
+              >|</span
+            >
           </h1>
 
           <h2 class="presentation-section__title">
@@ -46,13 +45,13 @@
           </p>
 
           <div class="presentation-section__cta">
-            <button 
+            <button
               class="presentation-section__cta-button presentation-section__cta-button--primary"
               @click="scrollToSection('projects')"
             >
               {{ t('home.presentationSection.cta.viewWork') }}
             </button>
-            <button 
+            <button
               class="presentation-section__cta-button presentation-section__cta-button--secondary"
               @click="scrollToSection('contact')"
             >
@@ -63,8 +62,8 @@
 
         <div class="presentation-section__image">
           <div class="presentation-section__image-container">
-            <img 
-              :src="personalInfo?.avatar || defaultAvatar" 
+            <img
+              :src="personalInfo?.avatar || defaultAvatar"
               :alt="personalInfo?.name || 'Profile'"
               class="presentation-section__image-photo"
             />
@@ -115,7 +114,7 @@ const startTypingAnimation = async () => {
 
   const text = nameElement.value.textContent || ''
   nameElement.value.textContent = ''
-  
+
   let i = 0
   const typeInterval = setInterval(() => {
     if (i < text.length) {
@@ -136,7 +135,7 @@ onMounted(() => {
       label: t('navigation.presentation'),
       order: 1,
       visible: true,
-      element: sectionElement
+      element: sectionElement,
     })
   }
 
@@ -228,7 +227,7 @@ onMounted(() => {
 
   &__text {
     flex: 1;
-    max-width: 600px;
+    max-width: 610px;
   }
 
   &__greeting {
@@ -452,16 +451,19 @@ onMounted(() => {
 }
 
 @keyframes blink {
-  0%, 50% {
+  0%,
+  50% {
     opacity: 1;
   }
-  51%, 100% {
+  51%,
+  100% {
     opacity: 0;
   }
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
   50% {
@@ -470,7 +472,8 @@ onMounted(() => {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.2;
     transform: scale(1);
   }
@@ -481,7 +484,11 @@ onMounted(() => {
 }
 
 @keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
     transform: translateY(0);
   }
   40% {

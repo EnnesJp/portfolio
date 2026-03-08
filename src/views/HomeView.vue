@@ -1,31 +1,28 @@
 <template>
   <main>
     <presentation-section />
-    <about-section />
+    <!-- <about-section /> -->
     <companies-section />
     <certifications-section />
     <hard-skills-section />
     <projects-section />
     <contact-section />
-    
-    <div 
-      class="scroll-progress"
-      :style="{ width: `${scrollProgress * 100}%` }"
-    />
+
+    <div class="scroll-progress" :style="{ width: `${scrollProgress * 100}%` }" />
   </main>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue'
 import { useNavigationStore } from '@/stores/navigation'
-import { 
+import {
   PresentationSection,
-  AboutSection, 
+  AboutSection,
   CompaniesSection,
   CertificationsSection,
-  HardSkillsSection, 
+  HardSkillsSection,
   ProjectsSection,
-  ContactSection 
+  ContactSection,
 } from '@components'
 
 const navigationStore = useNavigationStore()

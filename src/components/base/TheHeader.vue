@@ -1,16 +1,21 @@
 <template>
-  <header 
+  <header
     ref="headerRef"
-    class="header" 
+    class="header"
     :class="{ 'header--transparent': transparent, 'header--fixed': fixed }"
     role="banner"
   >
     <responsive-container size="xl">
       <div class="header__container">
-        <nav class="header__nav" v-if="shouldShowDesktopMenu" role="navigation" aria-label="Main navigation">
+        <nav
+          class="header__nav"
+          v-if="shouldShowDesktopMenu"
+          role="navigation"
+          aria-label="Main navigation"
+        >
           <ul class="header__nav-list" role="menubar">
-            <li 
-              v-for="section in visibleSections" 
+            <li
+              v-for="section in visibleSections"
               :key="section.id"
               class="header__nav-item"
               role="none"
@@ -55,10 +60,10 @@
       </div>
     </responsive-container>
 
-    <div 
+    <div
       ref="mobileMenuRef"
       id="mobile-navigation"
-      class="header__mobile-menu" 
+      class="header__mobile-menu"
       :class="{ 'header__mobile-menu--open': isMobileMenuOpen }"
       v-if="shouldShowMobileMenu"
       :aria-hidden="!isMobileMenuOpen"
@@ -68,8 +73,8 @@
     >
       <nav class="header__mobile-nav" role="navigation" aria-label="Mobile navigation">
         <ul class="header__mobile-nav-list" role="menu">
-          <li 
-            v-for="section in visibleSections" 
+          <li
+            v-for="section in visibleSections"
             :key="section.id"
             class="header__mobile-nav-item"
             role="none"
@@ -88,7 +93,7 @@
       </nav>
     </div>
 
-    <div 
+    <div
       class="header__mobile-overlay"
       :class="{ 'header__mobile-overlay--visible': isMobileMenuOpen }"
       @click="closeMobileMenu"
@@ -117,7 +122,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   transparent: false,
-  fixed: false
+  fixed: false,
 })
 
 interface Emits {
@@ -137,15 +142,11 @@ const {
   shouldShowMobileLayout,
   isMobileMenuOpen,
   toggleMobileMenu,
-  closeMobileMenu
+  closeMobileMenu,
 } = useResponsiveNavigation()
 
-const { 
-  createFocusTrap, 
-  addKeyboardNavigation, 
-  announce,
-  getFocusableElements 
-} = useAccessibility()
+const { createFocusTrap, addKeyboardNavigation, announce, getFocusableElements } =
+  useAccessibility()
 
 const navigationStore = useNavigationStore()
 const themeStore = useThemeStore()
@@ -167,7 +168,7 @@ const handleMobileNavClick = (sectionId: string) => {
   scrollToSection(sectionId)
   closeMobileMenu()
   emit('section-change', sectionId)
-  
+
   const sectionName = t(`navigation.${sectionId}`)
   announce(t('navigation.navigatedTo', { section: sectionName }), 'polite')
 }
@@ -175,7 +176,7 @@ const handleMobileNavClick = (sectionId: string) => {
 const handleDesktopNavClick = (sectionId: string) => {
   scrollToSection(sectionId)
   emit('section-change', sectionId)
-  
+
   const sectionName = t(`navigation.${sectionId}`)
   announce(t('navigation.navigatedTo', { section: sectionName }), 'polite')
 }
@@ -183,8 +184,10 @@ const handleDesktopNavClick = (sectionId: string) => {
 const handleKeyDown = (event: KeyboardEvent) => {
   if (event.key === 'Escape' && isMobileMenuOpen.value) {
     closeMobileMenu()
-    
-    const toggleButton = headerRef.value?.querySelector('.header__mobile-menu-toggle') as HTMLElement
+
+    const toggleButton = headerRef.value?.querySelector(
+      '.header__mobile-menu-toggle',
+    ) as HTMLElement
     toggleButton?.focus()
   }
 }
@@ -194,7 +197,7 @@ const setupFocusTrap = () => {
     focusTrap.value = createFocusTrap(mobileMenuRef.value, {
       initialFocus: '.header__mobile-nav-link',
       returnFocus: true,
-      allowOutsideClick: true
+      allowOutsideClick: true,
     })
     focusTrap.value.activate()
   }
@@ -214,17 +217,17 @@ const setupKeyboardNavigation = () => {
       orientation: 'horizontal',
       enableArrowKeys: true,
       enableHomeEnd: true,
-      wrap: true
+      wrap: true,
     })
   }
-  
+
   const mobileNav = mobileMenuRef.value?.querySelector('.header__mobile-nav-list')
   if (mobileNav) {
     addKeyboardNavigation(mobileNav as HTMLElement, {
       orientation: 'vertical',
       enableArrowKeys: true,
       enableHomeEnd: true,
-      wrap: true
+      wrap: true,
     })
   }
 }
@@ -232,16 +235,16 @@ const setupKeyboardNavigation = () => {
 watch(isMobileMenuOpen, async (isOpen) => {
   if (isOpen) {
     document.body.style.overflow = 'hidden'
-    
+
     await nextTick()
     setupFocusTrap()
-    
+
     announce(t('navigation.mobileMenuOpened'), 'polite')
   } else {
     document.body.style.overflow = ''
-    
+
     teardownFocusTrap()
-    
+
     announce(t('navigation.mobileMenuClosed'), 'polite')
   }
 })
@@ -252,9 +255,11 @@ watch(currentSection, (newSection, oldSection) => {
     if (activeNavItem) {
       activeNavItem.setAttribute('tabindex', '0')
     }
-    
-    const navItems = headerRef.value?.querySelectorAll('.header__nav-link:not([aria-current="page"])')
-    navItems?.forEach(item => {
+
+    const navItems = headerRef.value?.querySelectorAll(
+      '.header__nav-link:not([aria-current="page"])',
+    )
+    navItems?.forEach((item) => {
       item.setAttribute('tabindex', '-1')
     })
   }
@@ -262,7 +267,7 @@ watch(currentSection, (newSection, oldSection) => {
 
 onMounted(() => {
   document.addEventListener('keydown', handleKeyDown)
-  
+
   nextTick(() => {
     setupKeyboardNavigation()
   })
@@ -271,7 +276,7 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener('keydown', handleKeyDown)
   teardownFocusTrap()
-  
+
   if (isMobileMenuOpen.value) {
     document.body.style.overflow = ''
   }
@@ -304,7 +309,6 @@ onUnmounted(() => {
     justify-content: space-between;
     align-items: center;
   }
-
 
   &__nav {
     display: flex;
@@ -368,6 +372,7 @@ onUnmounted(() => {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    margin-left: auto;
   }
 
   &__mobile-menu-toggle {
@@ -436,16 +441,18 @@ onUnmounted(() => {
 
   &__mobile-menu {
     position: fixed;
-    top: 100%;
+    bottom: 0;
     left: 0;
     right: 0;
     background-color: var(--color-background);
     border-top: 1px solid var(--color-border);
-    transform: translateY(-100%);
+    transform: translateY(100%);
     transition: transform var(--transition-medium);
-    z-index: calc(var(--z-fixed) - 1);
-    max-height: calc(100vh - var(--header-height));
+    z-index: calc(var(--z-fixed) + 1);
+    max-height: 80vh;
     overflow-y: auto;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
 
     &--open {
       transform: translateY(0);
@@ -505,7 +512,7 @@ onUnmounted(() => {
     opacity: 0;
     visibility: hidden;
     transition: all var(--transition-medium);
-    z-index: calc(var(--z-fixed) - 2);
+    z-index: var(--z-fixed);
 
     &--visible {
       opacity: 1;
@@ -547,7 +554,7 @@ onUnmounted(() => {
     &__mobile-menu {
       transition: none;
     }
-    
+
     .hamburger span {
       transition: none;
     }
@@ -557,10 +564,10 @@ onUnmounted(() => {
 @media (prefers-contrast: high) {
   .header {
     border-bottom-width: 2px;
-    
+
     &__nav-link {
       border: 1px solid transparent;
-      
+
       &:hover,
       &--active {
         border-color: currentColor;
