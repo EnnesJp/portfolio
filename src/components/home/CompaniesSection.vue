@@ -216,7 +216,7 @@ onMounted(() => {
 
   &__timeline {
     position: relative;
-    max-width: 900px;
+    max-width: 1100px;
     margin: 0 auto;
 
     &-line {
@@ -231,7 +231,7 @@ onMounted(() => {
 
     &-item {
       position: relative;
-      margin-bottom: 60px;
+      margin-bottom: 100px;
       display: flex;
       align-items: center;
 
@@ -242,8 +242,8 @@ onMounted(() => {
       justify-content: flex-end;
 
       .companies-section__company-card {
-        margin-right: 60px;
-        max-width: 400px;
+        margin-right: 70px;
+        max-width: 450px;
       }
 
       &--alternate {
@@ -251,7 +251,7 @@ onMounted(() => {
 
         .companies-section__company-card {
           margin-right: 0;
-          margin-left: 60px;
+          margin-left: 120px;
         }
 
         .companies-section__timeline-marker {
@@ -321,11 +321,12 @@ onMounted(() => {
 
       &-item {
         justify-content: flex-start !important;
+        margin-bottom: 70px;
 
         .companies-section__company-card {
           margin-right: 0 !important;
-          margin-left: 60px !important;
-          max-width: calc(100% - 80px);
+          margin-left: 80px !important;
+          max-width: calc(100% - 100px);
         }
       }
 
@@ -374,11 +375,11 @@ onMounted(() => {
 
     &__timeline {
       &-item {
-        margin-bottom: 40px;
+        margin-bottom: 60px;
 
         .companies-section__company-card {
-          margin-left: 50px !important;
-          max-width: calc(100% - 60px);
+          margin-left: 70px !important;
+          max-width: calc(100% - 85px);
         }
       }
 
