@@ -9,7 +9,10 @@
           </span>
         </div>
 
-        <div class="about-section-main__info--name" v-html="personalInfo?.name ? t('home.aboutSection.name') : t('home.aboutSection.name')" />
+        <div
+          class="about-section-main__info--name"
+          v-html="personalInfo?.name ? t('home.aboutSection.name') : t('home.aboutSection.name')"
+        />
 
         <span class="about-section-main__info--resume">
           {{ personalInfo?.title || t('home.aboutSection.resume') }}
@@ -21,8 +24,8 @@
       </div>
 
       <div class="about-section-main__img">
-        <LazyImage 
-          :src="personalInfo?.avatar || defaultAvatar" 
+        <LazyImage
+          :src="personalInfo?.avatar || defaultAvatar"
           :alt="personalInfo?.name || 'Profile'"
           class="about-section-main__img--photo"
           :width="380"
@@ -38,8 +41,8 @@
     <div class="about-section-journey" v-if="aboutData?.professionalJourney?.length">
       <h3 class="about-section-journey__title">{{ t('home.aboutSection.journey.title') }}</h3>
       <div class="about-section-journey__timeline">
-        <div 
-          v-for="item in aboutData.professionalJourney" 
+        <div
+          v-for="item in aboutData.professionalJourney"
           :key="item.id"
           class="about-section-journey__item"
           :class="`about-section-journey__item--${item.type}`"
@@ -57,8 +60,8 @@
     <div class="about-section-values" v-if="aboutData?.values?.length">
       <h3 class="about-section-values__title">{{ t('home.aboutSection.values.title') }}</h3>
       <div class="about-section-values__grid">
-        <div 
-          v-for="(value, index) in aboutData.values" 
+        <div
+          v-for="(value, index) in aboutData.values"
           :key="index"
           class="about-section-values__item"
         >
@@ -73,8 +76,8 @@
     <div class="about-section-interests" v-if="aboutData?.interests?.length">
       <h3 class="about-section-interests__title">{{ t('home.aboutSection.interests.title') }}</h3>
       <div class="about-section-interests__tags">
-        <span 
-          v-for="(interest, index) in aboutData.interests" 
+        <span
+          v-for="(interest, index) in aboutData.interests"
           :key="index"
           class="about-section-interests__tag"
         >
@@ -124,7 +127,7 @@ import { useI18n } from 'vue-i18n'
 import { usePortfolioStore } from '@/stores/portfolio'
 import { useNavigationStore } from '@/stores/navigation'
 import { storeToRefs } from 'pinia'
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted } from 'vue'
 
 const { t } = useI18n()
 const portfolioStore = usePortfolioStore()
@@ -150,7 +153,7 @@ onMounted(() => {
       label: t('navigation.about'),
       order: 2,
       visible: true,
-      element: sectionElement
+      element: sectionElement,
     })
   }
 })
@@ -274,7 +277,7 @@ onMounted(() => {
 
       &:nth-child(odd) {
         flex-direction: row;
-        
+
         .about-section-journey__item-content {
           margin-left: 60px;
           text-align: left;
@@ -283,7 +286,7 @@ onMounted(() => {
 
       &:nth-child(even) {
         flex-direction: row-reverse;
-        
+
         .about-section-journey__item-content {
           margin-right: 60px;
           text-align: right;
@@ -373,7 +376,9 @@ onMounted(() => {
       padding: 24px;
       background: var(--color-surface);
       border-radius: 12px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 
       &:hover {
         transform: translateY(-4px);
@@ -460,7 +465,9 @@ onMounted(() => {
         cursor: pointer;
         width: 24px;
         height: 24px;
-        transition: transform 0.2s ease, opacity 0.2s ease;
+        transition:
+          transform 0.2s ease,
+          opacity 0.2s ease;
 
         &:hover {
           transform: scale(1.2);
@@ -521,7 +528,7 @@ onMounted(() => {
         &:nth-child(odd),
         &:nth-child(even) {
           flex-direction: row;
-          
+
           .about-section-journey__item-content {
             margin-left: 60px;
             margin-right: 0;

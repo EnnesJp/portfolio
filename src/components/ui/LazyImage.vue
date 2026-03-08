@@ -1,35 +1,32 @@
 <template>
-  <div 
+  <div
     ref="containerRef"
     class="lazy-image-container"
     :class="{
       'lazy-image-container--loading': isLoading,
       'lazy-image-container--loaded': isLoaded,
       'lazy-image-container--error': hasError,
-      'lazy-image-container--intersecting': isIntersecting
+      'lazy-image-container--intersecting': isIntersecting,
     }"
     :style="containerStyle"
   >
-    <div 
-      v-if="blurDataUrl && !isLoaded" 
+    <div
+      v-if="blurDataUrl && !isLoaded"
       class="lazy-image-blur-placeholder"
       :style="{ backgroundImage: `url(${blurDataUrl})` }"
     />
-    
-    <div 
-      v-else-if="placeholderColor && !isLoaded" 
+
+    <div
+      v-else-if="placeholderColor && !isLoaded"
       class="lazy-image-color-placeholder"
       :style="{ backgroundColor: placeholderColor }"
     />
-    
-    <div 
-      v-else-if="!isLoaded && !hasError" 
-      class="lazy-image-skeleton-placeholder"
-    />
-    
+
+    <div v-else-if="!isLoaded && !hasError" class="lazy-image-skeleton-placeholder" />
+
     <ResponsiveImage
       v-if="shouldRender"
-      :src="src"
+      :src="srcUrl"
       :alt="alt"
       :width="width"
       :height="height"
@@ -46,25 +43,23 @@
       @load="handleLoad"
       @error="handleError"
     />
-    
+
     <div v-if="hasError" class="lazy-image-error">
       <div class="lazy-image-error__icon">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+          <path
+            d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"
+          />
         </svg>
       </div>
       <div class="lazy-image-error__text">
         {{ errorMessage || t('common.imageLoadError') }}
       </div>
-      <button 
-        v-if="allowRetry" 
-        class="lazy-image-error__retry"
-        @click="retry"
-      >
+      <button v-if="allowRetry" class="lazy-image-error__retry" @click="retry">
         {{ t('common.retry') }}
       </button>
     </div>
-    
+
     <div v-if="isLoading && showLoadingIndicator" class="lazy-image-loading">
       <div class="lazy-image-loading__spinner"></div>
     </div>
@@ -112,7 +107,7 @@ const props = withDefaults(defineProps<Props>(), {
   threshold: 0.1,
   showLoadingIndicator: true,
   allowRetry: true,
-  fadeInDuration: 300
+  fadeInDuration: 300,
 })
 
 const emit = defineEmits<{
@@ -123,7 +118,6 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
-const uiStore = useUIStore()
 
 const containerRef = ref<HTMLElement>()
 const intersectionObserver = ref<IntersectionObserver>()
@@ -135,11 +129,12 @@ const isLoaded = ref(false)
 const isIntersecting = ref(false)
 const shouldRender = ref(props.priority || props.loading === 'eager')
 
+const srcUrl = computed(() => new URL(props.src, import.meta.url).href)
 const containerStyle = computed(() => ({
   aspectRatio: props.aspectRatio,
   width: props.width ? `${props.width}px` : undefined,
   height: props.height ? `${props.height}px` : undefined,
-  '--fade-duration': `${props.fadeInDuration}ms`
+  '--fade-duration': `${props.fadeInDuration}ms`,
 }))
 
 const handleLoad = (event: Event) => {
@@ -163,11 +158,11 @@ const retry = () => {
     hasError.value = false
     isLoading.value = true
     shouldRender.value = false
-    
+
     nextTick(() => {
       shouldRender.value = true
     })
-    
+
     emit('retry')
   }
 }
@@ -183,7 +178,7 @@ const setupIntersectionObserver = () => {
       entries.forEach((entry) => {
         isIntersecting.value = entry.isIntersecting
         emit('intersect', entry.isIntersecting)
-        
+
         if (entry.isIntersecting && !shouldRender.value) {
           shouldRender.value = true
           intersectionObserver.value?.disconnect()
@@ -192,21 +187,24 @@ const setupIntersectionObserver = () => {
     },
     {
       rootMargin: props.rootMargin,
-      threshold: props.threshold
-    }
+      threshold: props.threshold,
+    },
   )
 
   intersectionObserver.value.observe(containerRef.value)
 }
 
-watch(() => props.src, () => {
-  if (shouldRender.value) {
-    isLoading.value = true
-    isLoaded.value = false
-    hasError.value = false
-    retryCount.value = 0
-  }
-})
+watch(
+  () => props.src,
+  () => {
+    if (shouldRender.value) {
+      isLoading.value = true
+      isLoaded.value = false
+      hasError.value = false
+      retryCount.value = 0
+    }
+  },
+)
 
 onMounted(() => {
   nextTick(() => {
@@ -225,25 +223,25 @@ onUnmounted(() => {
   overflow: hidden;
   border-radius: var(--border-radius, 8px);
   background: var(--color-surface);
-  
+
   &--loading {
     .lazy-image {
       opacity: 0;
     }
   }
-  
+
   &--loaded {
     .lazy-image {
       opacity: 1;
     }
-    
+
     .lazy-image-blur-placeholder,
     .lazy-image-color-placeholder,
     .lazy-image-skeleton-placeholder {
       opacity: 0;
     }
   }
-  
+
   &--error {
     display: flex;
     align-items: center;
@@ -304,7 +302,7 @@ onUnmounted(() => {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  
+
   &__spinner {
     width: 32px;
     height: 32px;
@@ -324,21 +322,21 @@ onUnmounted(() => {
   padding: 2rem;
   color: var(--color-text-secondary);
   text-align: center;
-  
+
   &__icon {
     opacity: 0.5;
-    
+
     svg {
       width: 48px;
       height: 48px;
     }
   }
-  
+
   &__text {
     font-size: 0.875rem;
     line-height: 1.4;
   }
-  
+
   &__retry {
     padding: 0.5rem 1rem;
     background: var(--color-primary);
@@ -348,7 +346,7 @@ onUnmounted(() => {
     font-size: 0.875rem;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    
+
     &:hover {
       background: var(--color-primary-dark, var(--color-primary));
       opacity: 0.9;
@@ -381,12 +379,12 @@ onUnmounted(() => {
   .lazy-image-skeleton-placeholder {
     transition: none;
   }
-  
+
   .lazy-image-skeleton-placeholder {
     animation: none;
     background: var(--color-border);
   }
-  
+
   .lazy-image-loading__spinner {
     animation: none;
     border-top-color: var(--color-border);
@@ -397,7 +395,7 @@ onUnmounted(() => {
   .lazy-image-container {
     border: 1px solid var(--color-border);
   }
-  
+
   .lazy-image-error {
     border: 2px solid var(--color-text);
     background: var(--color-background);

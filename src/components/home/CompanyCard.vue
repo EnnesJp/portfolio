@@ -2,17 +2,7 @@
   <div class="company-card" :class="`company-card--${viewMode}`">
     <div class="company-card__header">
       <div class="company-card__logo" v-if="company.logo">
-        <LazyImage 
-          :src="company.logo" 
-          :alt="`${company.name} logo`"
-          class="company-card__logo-img"
-          :width="60"
-          :height="60"
-          object-fit="contain"
-          loading="lazy"
-          :quality="90"
-          placeholder-color="#f8f9fa"
-        />
+        <img :src="company.logo" :alt="`${company.name} logo`" class="company-card__logo-img" />
       </div>
       <div class="company-card__info">
         <h3 class="company-card__name">{{ company.name }}</h3>
@@ -30,8 +20,8 @@
         {{ t('home.companiesSection.company.achievements') }}
       </h4>
       <ul class="company-card__achievements-list">
-        <li 
-          v-for="(achievement, index) in company.achievements" 
+        <li
+          v-for="(achievement, index) in company.achievements"
           :key="index"
           class="company-card__achievement-item"
         >
@@ -45,11 +35,7 @@
         {{ t('home.companiesSection.company.technologies') }}
       </h4>
       <div class="company-card__tech-tags">
-        <span 
-          v-for="tech in company.technologies" 
-          :key="tech"
-          class="company-card__tech-tag"
-        >
+        <span v-for="tech in company.technologies" :key="tech" class="company-card__tech-tag">
           {{ tech }}
         </span>
       </div>
@@ -59,7 +45,6 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { LazyImage } from '@/components/ui'
 import type { Company } from '@/types'
 
 interface Props {
@@ -71,15 +56,17 @@ const props = defineProps<Props>()
 const { t } = useI18n()
 
 const formatDate = (date: Date): string => {
-  return date.toLocaleDateString('en-US', { 
-    year: 'numeric', 
-    month: 'short' 
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
   })
 }
 
 const formatPeriod = (company: Company): string => {
   const start = formatDate(company.period.start)
-  const end = company.period.end ? formatDate(company.period.end) : t('home.companiesSection.company.current')
+  const end = company.period.end
+    ? formatDate(company.period.end)
+    : t('home.companiesSection.company.current')
   return `${start} - ${end}`
 }
 </script>
@@ -132,7 +119,6 @@ const formatPeriod = (company: Company): string => {
     &-img {
       width: 100%;
       height: 100%;
-      padding: 8px;
     }
   }
 

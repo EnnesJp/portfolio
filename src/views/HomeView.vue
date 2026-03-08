@@ -1,7 +1,7 @@
 <template>
   <main>
     <presentation-section />
-    <!-- <about-section /> -->
+    <about-section />
     <companies-section />
     <certifications-section />
     <hard-skills-section />
