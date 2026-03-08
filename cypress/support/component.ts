@@ -1,5 +1,5 @@
 // ***********************************************************
-// This example support/component.ts is processed and
+// This support/component.ts is processed and
 // loaded automatically before your test files.
 //
 // This is a great place to put global configuration and
@@ -39,5 +39,5 @@ declare global {
 
 Cypress.Commands.add('mount', mount)
 
-// Example use:
+// Usage:
 // cy.mount(MyComponent)

@@ -1,2 +1,6 @@
 export { default as Arrow } from './Arrow.vue'
 export { default as SmallArrow } from './SmallArrow.vue'
+export { default as Email } from './Email.vue'
+export { default as Phone } from './Phone.vue'
+export { default as GitHub } from './GitHub.vue'
+export { default as LinkedIn } from './LinkedIn.vue'

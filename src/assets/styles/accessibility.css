@@ -1,0 +1,376 @@
+.skip-links {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--color-primary);
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 0 0 4px 4px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: top 0.2s ease;
+  z-index: 10000;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+.focus-trap-active {
+  overflow: hidden;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.sr-only-focusable:focus,
+.sr-only-focusable:active {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: inherit !important;
+  margin: inherit !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: inherit !important;
+}
+
+@media (prefers-contrast: high) {
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    border: 2px solid;
+  }
+  
+  :focus {
+    outline: 3px solid;
+    outline-offset: 2px;
+  }
+  
+  .card,
+  .modal,
+  .dropdown {
+    border: 2px solid;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .loading-spinner,
+  .progress-indicator {
+    animation-duration: 1s !important;
+  }
+}
+
+:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb), 0.2);
+}
+
+.keyboard-navigation-active {
+}
+
+.keyboard-navigation-active :focus {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+[aria-live] {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+[role="dialog"],
+[role="alertdialog"] {
+  position: fixed;
+  z-index: 1000;
+}
+
+.modal-open {
+  overflow: hidden;
+}
+
+.modal-open > *:not(.modal):not([aria-hidden="false"]) {
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.form-field {
+  position: relative;
+}
+
+.form-field input:invalid,
+.form-field textarea:invalid,
+.form-field select:invalid {
+  border-color: var(--color-error, #dc3545);
+}
+
+.form-field .error-message {
+  color: var(--color-error, #dc3545);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.form-field .required-indicator {
+  color: var(--color-error, #dc3545);
+  font-weight: bold;
+}
+
+.loading {
+  position: relative;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading[aria-busy="true"]::after {
+  content: 'Loading...';
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav [aria-current="page"] {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+}
+
+th[aria-sort] {
+  cursor: pointer;
+}
+
+th[aria-sort="ascending"]::after {
+  content: ' ↑';
+}
+
+th[aria-sort="descending"]::after {
+  content: ' ↓';
+}
+
+img[alt=""] {
+}
+
+img:not([alt]) {
+  outline: 2px solid red;
+}
+
+.high-contrast {
+  --color-text: #000000;
+  --color-background: #ffffff;
+  --color-primary: #0000ff;
+  --color-border: #000000;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: #ffffff;
+    --color-background: #000000;
+    --color-surface: #1a1a1a;
+    --color-border: #333333;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  a[href^="http"]:after {
+    content: " (" attr(href) ")";
+  }
+  
+  abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+}
+
+@media (pointer: coarse) {
+  button,
+  a,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  input[type="checkbox"],
+  input[type="radio"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+[aria-invalid="true"] {
+  border-color: var(--color-error, #dc3545);
+  box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
+}
+
+[role="alert"] {
+  padding: 1rem;
+  border: 2px solid var(--color-error, #dc3545);
+  background: rgba(220, 53, 69, 0.1);
+  border-radius: 4px;
+}
+
+[aria-describedby*="success"] {
+  border-color: var(--color-success, #28a745);
+}
+
+[role="status"] {
+  padding: 1rem;
+  border: 2px solid var(--color-success, #28a745);
+  background: rgba(40, 167, 69, 0.1);
+  border-radius: 4px;
+}
+
+[role="tooltip"] {
+  position: absolute;
+  z-index: 1000;
+  padding: 0.5rem;
+  background: var(--color-text);
+  color: var(--color-background);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  max-width: 200px;
+  word-wrap: break-word;
+}
+
+[aria-expanded="false"] + * {
+  display: none;
+}
+
+[aria-expanded="true"] + * {
+  display: block;
+}
+
+[role="progressbar"] {
+  background: var(--color-surface);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+[role="progressbar"]::after {
+  content: '';
+  display: block;
+  height: 100%;
+  background: var(--color-primary);
+  width: var(--progress-value, 0%);
+  transition: width 0.3s ease;
+}
+
+main {
+}
+
+[role="banner"],
+[role="navigation"],
+[role="main"],
+[role="complementary"],
+[role="contentinfo"] {
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .slide-in {
+    animation: slideIn 0.3s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+  
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+  h4 { font-size: 1.125rem; }
+  h5 { font-size: 1rem; }
+  h6 { font-size: 0.875rem; }
+}

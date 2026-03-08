@@ -7,7 +7,30 @@ const messages = {
   pt,
 }
 
+const getInitialLocale = (): string => {
+  try {
+    const savedLanguage = localStorage.getItem('portfolio-language')
+    if (savedLanguage && messages[savedLanguage as keyof typeof messages]) {
+      return savedLanguage
+    }
+    
+    const browserLanguage = navigator.language.split('-')[0]
+    if (messages[browserLanguage as keyof typeof messages]) {
+      return browserLanguage
+    }
+  } catch (error) {
+    console.warn('Failed to get initial locale:', error)
+  }
+  
+  return 'en'
+}
+
 export const i18n = createI18n({
-  locale: 'en',
+  locale: getInitialLocale(),
+  fallbackLocale: 'en',
   messages,
+  legacy: false,
+  globalInjection: true,
+  missingWarn: false,
+  fallbackWarn: false,
 })

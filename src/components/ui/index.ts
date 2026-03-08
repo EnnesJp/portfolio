@@ -1,2 +1,5 @@
 export { default as AppButton } from './AppButton.vue'
+export { default as LazyImage } from './LazyImage.vue'
+export { default as ResponsiveGrid } from './ResponsiveGrid.vue'
+export { default as ResponsiveContainer } from './ResponsiveContainer.vue'
 export { default as AppInput } from './forms/AppInput.vue'
