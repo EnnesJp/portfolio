@@ -95,28 +95,23 @@ export default {
         nubank: {
           position: 'Software Engineer',
           description:
-            'Leading development of enterprise web applications using modern technologies.',
-          achievements: {
-            performance: 'Improved application performance by 40%',
-            leadership: 'Led a team of 5 developers',
-            cicd: 'Implemented CI/CD pipeline reducing deployment time by 60%',
-          },
+            'Development of enterprise web applications using modern technologies and functional programing languages.',
+          achievements: {},
         },
         onfly: {
           position: 'Full Stack Developer PL. II',
-          description:
-            'Developed custom web solutions for various clients across different industries.',
+          description: 'Complete development of Onhappy, going from zero to 500 hundred users.',
           achievements: {
-            projects: 'Delivered 15+ successful projects',
-            onboarding: 'Reduced client onboarding time by 50%',
+            performance: 'Improved application performance by 40%',
             mentoring: 'Mentored junior developers',
+            cicd: 'Implemented CI/CD pipeline reducing deployment production errors',
           },
         },
         nelogica: {
           position: 'Software Developer',
           description: 'Built responsive web applications and mobile-first interfaces.',
           achievements: {
-            engagement: 'Increased user engagement by 35%',
+            projects: 'Delivered 5+ successful projects',
             designSystem: 'Implemented responsive design system',
             performance: 'Optimized loading times by 45%',
           },

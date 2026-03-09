@@ -120,11 +120,7 @@ export const usePortfolioStore = defineStore('portfolio', () => {
                 end: undefined,
               },
               description: t('home.portfolioData.companies.nubank.description'),
-              achievements: [
-                t('home.portfolioData.companies.nubank.achievements.performance'),
-                t('home.portfolioData.companies.nubank.achievements.leadership'),
-                t('home.portfolioData.companies.nubank.achievements.cicd'),
-              ],
+              achievements: [],
               technologies: ['Clojure', 'Datomic'],
             },
             {
@@ -138,8 +134,8 @@ export const usePortfolioStore = defineStore('portfolio', () => {
               },
               description: t('home.portfolioData.companies.onfly.description'),
               achievements: [
-                t('home.portfolioData.companies.onfly.achievements.projects'),
-                t('home.portfolioData.companies.onfly.achievements.onboarding'),
+                t('home.portfolioData.companies.onfly.achievements.cicd'),
+                t('home.portfolioData.companies.onfly.achievements.performance'),
                 t('home.portfolioData.companies.onfly.achievements.mentoring'),
               ],
               technologies: ['Laravel', 'Vue.js', 'MySQL', 'JavaScript', 'PHP'],
@@ -155,7 +151,7 @@ export const usePortfolioStore = defineStore('portfolio', () => {
               },
               description: t('home.portfolioData.companies.nelogica.description'),
               achievements: [
-                t('home.portfolioData.companies.nelogica.achievements.engagement'),
+                t('home.portfolioData.companies.nelogica.achievements.projects'),
                 t('home.portfolioData.companies.nelogica.achievements.designSystem'),
                 t('home.portfolioData.companies.nelogica.achievements.performance'),
               ],
