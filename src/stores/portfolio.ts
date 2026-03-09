@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed, readonly } from 'vue'
+import { ref, computed, readonly, watch } from 'vue'
 import type { PortfolioData, PersonalInfo } from '@/types'
 import { useLanguageStore } from './language'
 
@@ -8,6 +8,13 @@ export const usePortfolioStore = defineStore('portfolio', () => {
   const portfolioData = ref<PortfolioData | null>(null)
   const isLoading = ref(false)
   const error = ref<string | null>(null)
+
+  watch(
+    () => languageStore.currentLanguage,
+    () => {
+      loadPortfolioData()
+    },
+  )
 
   const t = (key: string, fallback?: string): string => {
     return languageStore.getTranslation(key, fallback)
