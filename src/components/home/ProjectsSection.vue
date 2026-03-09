@@ -1,150 +1,146 @@
 <template>
-  <app-section
-    class="projects-section"
-    :title="t('home.projectsSection.title')"
-  >
-    <div class="projects-controls">
-      <div class="category-filter">
-        <button
-          v-for="category in allCategories"
-          :key="category.id"
-          :class="['category-btn', { active: selectedCategory === category.id }]"
-          :style="{ '--category-color': category.color }"
-          @click="setSelectedCategory(category.id)"
+  <section class="projects-section" id="projects">
+    <div class="projects-section__container">
+      <div class="projects-section__header">
+        <h2 class="projects-section__title">
+          {{ t('home.projectsSection.title') }}
+        </h2>
+      </div>
+
+      <div class="projects-controls">
+        <div class="category-filter">
+          <button
+            v-for="category in allCategories"
+            :key="category.id"
+            :class="['category-btn', { active: selectedCategory === category.id }]"
+            :style="{ '--category-color': category.color }"
+            @click="setSelectedCategory(category.id)"
+          >
+            {{ category.name }}
+          </button>
+        </div>
+
+        <div class="featured-toggle">
+          <label class="toggle-label">
+            <input type="checkbox" v-model="showFeaturedOnly" class="toggle-input" />
+            <span class="toggle-slider"></span>
+            <span class="toggle-text">{{ t('home.projectsSection.featuredOnly') }}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="projects-grid">
+        <div
+          v-for="project in filteredProjects"
+          :key="project.id"
+          class="project-card"
+          :style="{ '--category-color': project.category.color }"
         >
-          {{ category.name }}
-        </button>
-      </div>
-
-      <div class="featured-toggle">
-        <label class="toggle-label">
-          <input
-            type="checkbox"
-            v-model="showFeaturedOnly"
-            class="toggle-input"
-          />
-          <span class="toggle-slider"></span>
-          <span class="toggle-text">{{ t('home.projectsSection.featuredOnly') }}</span>
-        </label>
-      </div>
-    </div>
-
-    <div class="projects-grid">
-      <div
-        v-for="project in filteredProjects"
-        :key="project.id"
-        class="project-card"
-        :style="{ '--category-color': project.category.color }"
-      >
-        <div class="project-images" v-if="project.images.length > 0">
-          <div class="image-gallery">
-            <LazyImage
-              v-for="(image, index) in project.images"
-              :key="index"
-              :src="image"
-              :alt="`${project.title} screenshot ${index + 1}`"
-              :class="['gallery-image', { active: activeImageIndex[project.id] === index }]"
-              :width="400"
-              :height="200"
-              object-fit="cover"
-              :loading="index === 0 ? 'eager' : 'lazy'"
-              :quality="80"
-              @click="setActiveImage(project.id, index)"
-            />
-          </div>
-          <div class="image-indicators" v-if="project.images.length > 1">
-            <button
-              v-for="(_, index) in project.images"
-              :key="index"
-              :class="['indicator', { active: activeImageIndex[project.id] === index }]"
-              @click="setActiveImage(project.id, index)"
-            ></button>
-          </div>
-        </div>
-
-        <div class="project-content">
-          <div class="project-header">
-            <div class="project-title-section">
-              <h3 class="project-title">{{ project.title }}</h3>
-              <span class="project-category">{{ project.category.name }}</span>
-              <span v-if="project.featured" class="featured-badge">
-                {{ t('home.projectsSection.featured') }}
-              </span>
+          <div class="project-images" v-if="project.images.length > 0">
+            <div class="image-gallery">
+              <LazyImage
+                v-for="(image, index) in project.images"
+                :key="index"
+                :src="image"
+                :alt="`${project.title} screenshot ${index + 1}`"
+                :class="['gallery-image', { active: activeImageIndex[project.id] === index }]"
+                :width="400"
+                :height="200"
+                object-fit="cover"
+                :loading="index === 0 ? 'eager' : 'lazy'"
+                :quality="80"
+                @click="setActiveImage(project.id, index)"
+              />
             </div>
-            <div class="project-role">{{ project.role }}</div>
+            <div class="image-indicators" v-if="project.images.length > 1">
+              <button
+                v-for="(_, index) in project.images"
+                :key="index"
+                :class="['indicator', { active: activeImageIndex[project.id] === index }]"
+                @click="setActiveImage(project.id, index)"
+              ></button>
+            </div>
           </div>
 
-          <p class="project-description">{{ project.description }}</p>
+          <div class="project-content">
+            <div class="project-header">
+              <div class="project-title-section">
+                <h3 class="project-title">{{ project.title }}</h3>
+                <span class="project-category">{{ project.category.name }}</span>
+                <span v-if="project.featured" class="featured-badge">
+                  {{ t('home.projectsSection.featured') }}
+                </span>
+              </div>
+              <div class="project-role">{{ project.role }}</div>
+            </div>
 
-          <div class="project-technologies">
-            <span class="tech-label">{{ t('home.projectsSection.technologies') }}:</span>
-            <div class="tech-tags">
-              <span
-                v-for="tech in project.technologies"
-                :key="tech"
-                class="tech-tag"
+            <p class="project-description">{{ project.description }}</p>
+
+            <div class="project-technologies">
+              <span class="tech-label">{{ t('home.projectsSection.technologies') }}:</span>
+              <div class="tech-tags">
+                <span v-for="tech in project.technologies" :key="tech" class="tech-tag">
+                  {{ tech }}
+                </span>
+              </div>
+            </div>
+
+            <div class="project-details">
+              <div class="detail-section" v-if="project.challenges.length > 0">
+                <h4 class="detail-title">{{ t('home.projectsSection.challenges') }}</h4>
+                <ul class="detail-list">
+                  <li v-for="challenge in project.challenges" :key="challenge">
+                    {{ challenge }}
+                  </li>
+                </ul>
+              </div>
+
+              <div class="detail-section" v-if="project.outcomes.length > 0">
+                <h4 class="detail-title">{{ t('home.projectsSection.outcomes') }}</h4>
+                <ul class="detail-list">
+                  <li v-for="outcome in project.outcomes" :key="outcome">
+                    {{ outcome }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="project-actions">
+              <a
+                v-if="project.liveUrl"
+                :href="project.liveUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="action-btn primary"
               >
-                {{ tech }}
-              </span>
+                {{ t('home.projectsSection.viewLive') }}
+                <ExternalLinkIcon />
+              </a>
+              <a
+                v-if="project.repositoryUrl"
+                :href="project.repositoryUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="action-btn secondary"
+              >
+                {{ t('home.projectsSection.viewCode') }}
+                <GithubIcon />
+              </a>
             </div>
-          </div>
-
-          <div class="project-details">
-            <div class="detail-section" v-if="project.challenges.length > 0">
-              <h4 class="detail-title">{{ t('home.projectsSection.challenges') }}</h4>
-              <ul class="detail-list">
-                <li v-for="challenge in project.challenges" :key="challenge">
-                  {{ challenge }}
-                </li>
-              </ul>
-            </div>
-
-            <div class="detail-section" v-if="project.outcomes.length > 0">
-              <h4 class="detail-title">{{ t('home.projectsSection.outcomes') }}</h4>
-              <ul class="detail-list">
-                <li v-for="outcome in project.outcomes" :key="outcome">
-                  {{ outcome }}
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="project-actions">
-            <a
-              v-if="project.liveUrl"
-              :href="project.liveUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="action-btn primary"
-            >
-              {{ t('home.projectsSection.viewLive') }}
-              <ExternalLinkIcon />
-            </a>
-            <a
-              v-if="project.repositoryUrl"
-              :href="project.repositoryUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="action-btn secondary"
-            >
-              {{ t('home.projectsSection.viewCode') }}
-              <GithubIcon />
-            </a>
           </div>
         </div>
       </div>
-    </div>
 
-    <div v-if="filteredProjects.length === 0" class="empty-state">
-      <p>{{ t('home.projectsSection.noProjects') }}</p>
+      <div v-if="filteredProjects.length === 0" class="empty-state">
+        <p>{{ t('home.projectsSection.noProjects') }}</p>
+      </div>
     </div>
-  </app-section>
+  </section>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { AppSection } from '@components'
 import { LazyImage } from '@/components/ui'
 import { usePortfolioStore } from '@/stores/portfolio'
 
@@ -152,13 +148,13 @@ const ExternalLinkIcon = {
   template: `<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
     <path d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V6.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
     <path d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
-  </svg>`
+  </svg>`,
 }
 
 const GithubIcon = {
   template: `<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
     <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-  </svg>`
+  </svg>`,
 }
 
 const { t } = useI18n()
@@ -173,21 +169,21 @@ const projectCategories = computed(() => portfolioStore.portfolioData?.projects?
 
 const allCategories = computed(() => [
   { id: 'all', name: t('home.projectsSection.allCategories'), color: '#666666' },
-  ...projectCategories.value
+  ...projectCategories.value,
 ])
 
 const filteredProjects = computed(() => {
   let filtered = projects.value
 
   if (selectedCategory.value !== 'all') {
-    filtered = filtered.filter(project => project.category.id === selectedCategory.value)
+    filtered = filtered.filter((project) => project.category.id === selectedCategory.value)
   }
 
   if (showFeaturedOnly.value) {
-    filtered = filtered.filter(project => project.featured)
+    filtered = filtered.filter((project) => project.featured)
   }
 
-  filtered.forEach(project => {
+  filtered.forEach((project) => {
     if (!(project.id in activeImageIndex)) {
       activeImageIndex[project.id] = 0
     }
@@ -207,11 +203,25 @@ const setActiveImage = (projectId: string, imageIndex: number) => {
 
 <style scoped lang="scss">
 .projects-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
+  padding: 80px 24px;
+  background: var(--color-background);
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  &__title {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 16px 0;
+  }
 }
 
 .projects-controls {
@@ -219,7 +229,7 @@ const setActiveImage = (projectId: string, imageIndex: number) => {
   flex-direction: column;
   gap: 1.5rem;
   width: 100%;
-  max-width: 1200px;
+  margin-bottom: 2rem;
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -313,7 +323,6 @@ const setActiveImage = (projectId: string, imageIndex: number) => {
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 2rem;
   width: 100%;
-  max-width: 1200px;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -574,31 +583,49 @@ const setActiveImage = (projectId: string, imageIndex: number) => {
   text-align: center;
   padding: 3rem;
   color: var(--color-text-secondary);
-  
+
   p {
     font-size: 1.125rem;
     margin: 0;
   }
 }
 
+@media (max-width: 1024px) {
+  .projects-section {
+    padding: 60px 20px;
+
+    &__title {
+      font-size: 40px;
+    }
+  }
+}
+
 @media (max-width: 768px) {
+  .projects-section {
+    padding: 40px 16px;
+
+    &__title {
+      font-size: 32px;
+    }
+  }
+
   .projects-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .project-header {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .project-role {
     text-align: left;
   }
-  
+
   .project-details {
     grid-template-columns: 1fr;
   }
-  
+
   .action-btn {
     flex: 1;
     justify-content: center;

@@ -1,11 +1,43 @@
 import { defineStore } from 'pinia'
 import { ref, computed, readonly } from 'vue'
-import type { PortfolioData, PersonalInfo, Company, Certification, Skill, Project } from '@/types'
+import type { PortfolioData, PersonalInfo } from '@/types'
+import { useLanguageStore } from './language'
 
 export const usePortfolioStore = defineStore('portfolio', () => {
+  const languageStore = useLanguageStore()
   const portfolioData = ref<PortfolioData | null>(null)
   const isLoading = ref(false)
   const error = ref<string | null>(null)
+
+  const t = (key: string, fallback?: string): string => {
+    return languageStore.getTranslation(key, fallback)
+  }
+
+  const getCategoryTranslation = (categoryId: string, section: string): string => {
+    const categoryMappings: Record<string, Record<string, string>> = {
+      certifications: {
+        cloud: 'home.certificationsSection.categories.cloud',
+        frontend: 'home.certificationsSection.categories.development',
+        management: 'home.certificationsSection.categories.project',
+        database: 'home.certificationsSection.categories.data',
+      },
+      skills: {
+        frontend: 'home.hardSkillsSection.skills.frontend.title',
+        backend: 'home.hardSkillsSection.skills.backend.title',
+        cloud: 'home.hardSkillsSection.skills.devops.title',
+        database: 'home.hardSkillsSection.skills.database.title',
+      },
+      projects: {
+        'web-app': 'home.projectsSection.categories.web',
+        api: 'home.projectsSection.categories.api',
+        portfolio: 'home.projectsSection.categories.portfolio',
+        infrastructure: 'home.projectsSection.categories.other',
+      },
+    }
+
+    const key = categoryMappings[section]?.[categoryId]
+    return key ? t(key, categoryId) : categoryId
+  }
 
   const personalInfo = computed(() => portfolioData.value?.personal)
   const companies = computed(() => portfolioData.value?.companies?.companies || [])
@@ -16,7 +48,7 @@ export const usePortfolioStore = defineStore('portfolio', () => {
   const featuredProjects = computed(() => projects.value.filter((p) => p.featured).slice(0, 3))
 
   const skillsByCategory = computed(() => {
-    const categories = new Map<string, Skill[]>()
+    const categories = new Map<string, any[]>()
     skills.value.forEach((skill) => {
       const category = skill.category.name
       if (!categories.has(category)) {
@@ -41,18 +73,17 @@ export const usePortfolioStore = defineStore('portfolio', () => {
           avatar: new URL('@/assets/images/self-img.jpeg', import.meta.url).href,
         },
         presentation: {
-          name: 'João Pedro Ennes',
-          title: 'Software Engineer',
-          summary:
-            'Passionate about creating amazing digital experiences with modern technologies and clean code.',
+          name: t('home.presentationSection.name'),
+          title: t('home.presentationSection.title'),
+          summary: t('home.presentationSection.summary'),
           ctaButtons: [
             {
-              label: 'View My Work',
+              label: t('home.presentationSection.cta.viewWork'),
               action: 'projects',
               variant: 'primary',
             },
             {
-              label: 'Get In Touch',
+              label: t('home.presentationSection.cta.getInTouch'),
               action: 'contact',
               variant: 'secondary',
             },
@@ -76,17 +107,16 @@ export const usePortfolioStore = defineStore('portfolio', () => {
               id: '1',
               name: 'Nubank',
               logo: '/portfolio/images/companies/nubank.png',
-              position: 'Software Engineer',
+              position: t('home.portfolioData.companies.nubank.position'),
               period: {
                 start: new Date('2026-03-16'),
                 end: undefined,
               },
-              description:
-                'Leading development of enterprise web applications using modern technologies.',
+              description: t('home.portfolioData.companies.nubank.description'),
               achievements: [
-                'Improved application performance by 40%',
-                'Led a team of 5 developers',
-                'Implemented CI/CD pipeline reducing deployment time by 60%',
+                t('home.portfolioData.companies.nubank.achievements.performance'),
+                t('home.portfolioData.companies.nubank.achievements.leadership'),
+                t('home.portfolioData.companies.nubank.achievements.cicd'),
               ],
               technologies: ['Clojure', 'Datomic'],
             },
@@ -94,36 +124,35 @@ export const usePortfolioStore = defineStore('portfolio', () => {
               id: '2',
               name: 'Onfly',
               logo: '/portfolio/images/companies/onfly.png',
-              position: 'Full Stack Developer PL. II',
+              position: t('home.portfolioData.companies.onfly.position'),
               period: {
                 start: new Date('2024-01-29'),
                 end: new Date('2026-03-13'),
               },
-              description:
-                'Developed custom web solutions for various clients across different industries.',
+              description: t('home.portfolioData.companies.onfly.description'),
               achievements: [
-                'Delivered 15+ successful projects',
-                'Reduced client onboarding time by 50%',
-                'Mentored junior developers',
+                t('home.portfolioData.companies.onfly.achievements.projects'),
+                t('home.portfolioData.companies.onfly.achievements.onboarding'),
+                t('home.portfolioData.companies.onfly.achievements.mentoring'),
               ],
-              technologies: ['React', 'Laravel', 'MySQL', 'JavaScript', 'PHP'],
+              technologies: ['Laravel', 'Vue.js', 'MySQL', 'JavaScript', 'PHP'],
             },
             {
               id: '3',
               name: 'Nelogica',
               logo: '/portfolio/images/companies/nelogica.jpg',
-              position: 'Software Developer',
+              position: t('home.portfolioData.companies.nelogica.position'),
               period: {
                 start: new Date('2022-05-24'),
                 end: new Date('2024-01-27'),
               },
-              description: 'Built responsive web applications and mobile-first interfaces.',
+              description: t('home.portfolioData.companies.nelogica.description'),
               achievements: [
-                'Increased user engagement by 35%',
-                'Implemented responsive design system',
-                'Optimized loading times by 45%',
+                t('home.portfolioData.companies.nelogica.achievements.engagement'),
+                t('home.portfolioData.companies.nelogica.achievements.designSystem'),
+                t('home.portfolioData.companies.nelogica.achievements.performance'),
               ],
-              technologies: ['Vue.js', 'SCSS', 'JavaScript', 'Webpack', 'Git'],
+              technologies: ['Vue.js', 'React', 'JavaScript', 'Git'],
             },
           ],
           displayMode: 'timeline',
@@ -132,71 +161,71 @@ export const usePortfolioStore = defineStore('portfolio', () => {
           certifications: [
             {
               id: '1',
-              name: 'AWS Certified Solutions Architect',
-              issuer: 'Amazon Web Services',
+              name: t('home.portfolioData.certifications.awsSaa.name'),
+              issuer: t('home.portfolioData.certifications.awsSaa.issuer'),
               date: new Date('2023-06-15'),
               credentialId: 'AWS-SAA-123456',
               verificationUrl: 'https://aws.amazon.com/verification',
               badge: '/images/badges/aws-saa.png',
               category: {
                 id: 'cloud',
-                name: 'Cloud Computing',
+                name: getCategoryTranslation('cloud', 'certifications'),
                 color: '#FF9900',
               },
             },
             {
               id: '2',
-              name: 'Vue.js Certified Developer',
-              issuer: 'Vue.js Foundation',
+              name: t('home.portfolioData.certifications.vueCertified.name'),
+              issuer: t('home.portfolioData.certifications.vueCertified.issuer'),
               date: new Date('2023-03-20'),
               credentialId: 'VUE-DEV-789012',
               verificationUrl: 'https://vuejs.org/verification',
               badge: '/images/badges/vue-certified.png',
               category: {
                 id: 'frontend',
-                name: 'Frontend Development',
+                name: getCategoryTranslation('frontend', 'certifications'),
                 color: '#4FC08D',
               },
             },
             {
               id: '3',
-              name: 'Professional Scrum Master I',
-              issuer: 'Scrum.org',
+              name: t('home.portfolioData.certifications.psm.name'),
+              issuer: t('home.portfolioData.certifications.psm.issuer'),
               date: new Date('2022-11-10'),
               credentialId: 'PSM-345678',
               verificationUrl: 'https://scrum.org/verification',
               badge: '/images/badges/psm-1.png',
               category: {
                 id: 'management',
-                name: 'Project Management',
+                name: getCategoryTranslation('management', 'certifications'),
                 color: '#0066CC',
               },
             },
             {
               id: '4',
-              name: 'Google Cloud Professional Developer',
-              issuer: 'Google Cloud',
+              name: t('home.portfolioData.certifications.gcpDev.name'),
+              issuer: t('home.portfolioData.certifications.gcpDev.issuer'),
               date: new Date('2023-01-25'),
               credentialId: 'GCP-DEV-901234',
               verificationUrl: 'https://cloud.google.com/verification',
               badge: '/images/badges/gcp-dev.png',
               category: {
                 id: 'cloud',
-                name: 'Cloud Computing',
+                name: getCategoryTranslation('cloud', 'certifications'),
                 color: '#FF9900',
               },
             },
             {
               id: '5',
-              name: 'MongoDB Certified Developer',
-              issuer: 'MongoDB University',
+              name: t('home.portfolioData.certifications.mongoDev.name'),
+              issuer: t('home.portfolioData.certifications.mongoDev.issuer'),
               date: new Date('2022-08-30'),
               credentialId: 'MONGO-DEV-567890',
               verificationUrl: 'https://university.mongodb.com/verification',
               badge: '/images/badges/mongodb-dev.png',
               category: {
                 id: 'database',
-                name: 'Database',
+                name: getCategoryTranslation('database', 'certifications'),
                 color: '#47A248',
               },
             },
@@ -204,22 +233,22 @@ export const usePortfolioStore = defineStore('portfolio', () => {
           categories: [
             {
               id: 'cloud',
-              name: 'Cloud Computing',
+              name: getCategoryTranslation('cloud', 'certifications'),
               color: '#FF9900',
             },
             {
               id: 'frontend',
-              name: 'Frontend Development',
+              name: getCategoryTranslation('frontend', 'certifications'),
               color: '#4FC08D',
             },
             {
               id: 'management',
-              name: 'Project Management',
+              name: getCategoryTranslation('management', 'certifications'),
               color: '#0066CC',
             },
             {
               id: 'database',
-              name: 'Database',
+              name: getCategoryTranslation('database', 'certifications'),
               color: '#47A248',
             },
           ],
@@ -231,7 +260,7 @@ export const usePortfolioStore = defineStore('portfolio', () => {
               name: 'Vue.js',
               category: {
                 id: 'frontend',
-                name: 'Frontend',
+                name: getCategoryTranslation('frontend', 'skills'),
                 color: '#4FC08D',
               },
               proficiency: 5,
@@ -244,7 +273,7 @@ export const usePortfolioStore = defineStore('portfolio', () => {
               name: 'TypeScript',
               category: {
                 id: 'frontend',
-                name: 'Frontend',
+                name: getCategoryTranslation('frontend', 'skills'),
                 color: '#4FC08D',
               },
               proficiency: 4,
@@ -257,7 +286,7 @@ export const usePortfolioStore = defineStore('portfolio', () => {
               name: 'Node.js',
               category: {
                 id: 'backend',
-                name: 'Backend',
+                name: getCategoryTranslation('backend', 'skills'),
                 color: '#339933',
               },
               proficiency: 4,
@@ -270,7 +299,7 @@ export const usePortfolioStore = defineStore('portfolio', () => {
               name: 'Python',
               category: {
                 id: 'backend',
-                name: 'Backend',
+                name: getCategoryTranslation('backend', 'skills'),
                 color: '#339933',
               },
               proficiency: 3,
@@ -283,7 +312,7 @@ export const usePortfolioStore = defineStore('portfolio', () => {
               name: 'AWS',
               category: {
                 id: 'cloud',
-                name: 'Cloud & DevOps',
+                name: getCategoryTranslation('cloud', 'skills'),
                 color: '#FF9900',
               },
               proficiency: 4,
@@ -296,7 +325,7 @@ export const usePortfolioStore = defineStore('portfolio', () => {
               name: 'Docker',
               category: {
                 id: 'cloud',
-                name: 'Cloud & DevOps',
+                name: getCategoryTranslation('cloud', 'skills'),
                 color: '#FF9900',
               },
               proficiency: 3,
@@ -309,7 +338,7 @@ export const usePortfolioStore = defineStore('portfolio', () => {
               name: 'PostgreSQL',
               category: {
                 id: 'database',
-                name: 'Database',
+                name: getCategoryTranslation('database', 'skills'),
                 color: '#336791',
               },
               proficiency: 4,
@@ -322,7 +351,7 @@ export const usePortfolioStore = defineStore('portfolio', () => {
               name: 'MongoDB',
               category: {
                 id: 'database',
-                name: 'Database',
+                name: getCategoryTranslation('database', 'skills'),
                 color: '#336791',
               },
               proficiency: 3,
@@ -334,22 +363,22 @@ export const usePortfolioStore = defineStore('portfolio', () => {
           categories: [
             {
               id: 'frontend',
-              name: 'Frontend',
+              name: getCategoryTranslation('frontend', 'skills'),
               color: '#4FC08D',
             },
             {
               id: 'backend',
-              name: 'Backend',
+              name: getCategoryTranslation('backend', 'skills'),
               color: '#339933',
             },
             {
               id: 'cloud',
-              name: 'Cloud & DevOps',
+              name: getCategoryTranslation('cloud', 'skills'),
               color: '#FF9900',
             },
             {
               id: 'database',
-              name: 'Database',
+              name: getCategoryTranslation('database', 'skills'),
               color: '#336791',
             },
           ],
@@ -359,9 +388,8 @@ export const usePortfolioStore = defineStore('portfolio', () => {
           projects: [
             {
               id: '1',
-              title: 'E-Commerce Platform',
-              description:
-                'A modern e-commerce platform built with Vue.js and Node.js, featuring real-time inventory management, payment processing, and admin dashboard.',
+              title: t('home.portfolioData.projects.ecommerce.title'),
+              description: t('home.portfolioData.projects.ecommerce.description'),
               technologies: ['Vue.js', 'Node.js', 'TypeScript', 'PostgreSQL', 'Stripe', 'AWS'],
               images: [
                 '/images/projects/ecommerce-1.jpg',
@@ -370,126 +398,122 @@ export const usePortfolioStore = defineStore('portfolio', () => {
               ],
               liveUrl: 'https://ecommerce-demo.portfolio.com',
               repositoryUrl: 'https://github.com/username/ecommerce-platform',
-              role: 'Full Stack Developer',
+              role: t('home.portfolioData.projects.ecommerce.role'),
               challenges: [
-                'Implementing real-time inventory synchronization',
-                'Optimizing database queries for large product catalogs',
-                'Ensuring PCI compliance for payment processing',
+                t('home.portfolioData.projects.ecommerce.challenges.inventory'),
+                t('home.portfolioData.projects.ecommerce.challenges.queries'),
+                t('home.portfolioData.projects.ecommerce.challenges.compliance'),
               ],
               outcomes: [
-                'Increased conversion rate by 25%',
-                'Reduced page load time by 40%',
-                'Successfully processed $100K+ in transactions',
+                t('home.portfolioData.projects.ecommerce.outcomes.conversion'),
+                t('home.portfolioData.projects.ecommerce.outcomes.performance'),
+                t('home.portfolioData.projects.ecommerce.outcomes.transactions'),
               ],
               category: {
                 id: 'web-app',
-                name: 'Web Application',
+                name: getCategoryTranslation('web-app', 'projects'),
                 color: '#4FC08D',
               },
               featured: true,
             },
             {
               id: '2',
-              title: 'Task Management API',
-              description:
-                'RESTful API for task management with team collaboration features, built with Node.js and MongoDB.',
+              title: t('home.portfolioData.projects.taskApi.title'),
+              description: t('home.portfolioData.projects.taskApi.description'),
               technologies: ['Node.js', 'Express', 'MongoDB', 'JWT', 'Socket.io', 'Docker'],
               images: ['/images/projects/task-api-1.jpg', '/images/projects/task-api-2.jpg'],
               repositoryUrl: 'https://github.com/username/task-management-api',
-              role: 'Backend Developer',
+              role: t('home.portfolioData.projects.taskApi.role'),
               challenges: [
-                'Designing scalable database schema',
-                'Implementing real-time notifications',
-                'Ensuring data consistency across team operations',
+                t('home.portfolioData.projects.taskApi.challenges.schema'),
+                t('home.portfolioData.projects.taskApi.challenges.notifications'),
+                t('home.portfolioData.projects.taskApi.challenges.consistency'),
               ],
               outcomes: [
-                'Supports 1000+ concurrent users',
-                'Achieved 99.9% uptime',
-                'Reduced task completion time by 30%',
+                t('home.portfolioData.projects.taskApi.outcomes.users'),
+                t('home.portfolioData.projects.taskApi.outcomes.uptime'),
+                t('home.portfolioData.projects.taskApi.outcomes.efficiency'),
               ],
               category: {
                 id: 'api',
-                name: 'API Development',
+                name: getCategoryTranslation('api', 'projects'),
                 color: '#339933',
               },
               featured: true,
             },
             {
               id: '3',
-              title: 'Portfolio Website',
-              description:
-                'Personal portfolio website showcasing projects and skills, built with Vue.js and modern web technologies.',
+              title: t('home.portfolioData.projects.portfolio.title'),
+              description: t('home.portfolioData.projects.portfolio.description'),
               technologies: ['Vue.js', 'TypeScript', 'Pinia', 'SCSS', 'Vite'],
               images: ['/images/projects/portfolio-1.jpg', '/images/projects/portfolio-2.jpg'],
               liveUrl: 'https://portfolio.demo.com',
               repositoryUrl: 'https://github.com/username/portfolio',
-              role: 'Frontend Developer & Designer',
+              role: t('home.portfolioData.projects.portfolio.role'),
               challenges: [
-                'Creating smooth animations and transitions',
-                'Implementing responsive design across all devices',
-                'Optimizing performance and accessibility',
+                t('home.portfolioData.projects.portfolio.challenges.animations'),
+                t('home.portfolioData.projects.portfolio.challenges.responsive'),
+                t('home.portfolioData.projects.portfolio.challenges.optimization'),
               ],
               outcomes: [
-                'Achieved 95+ Lighthouse score',
-                'Increased client inquiries by 50%',
-                'Featured in design showcases',
+                t('home.portfolioData.projects.portfolio.outcomes.lighthouse'),
+                t('home.portfolioData.projects.portfolio.outcomes.inquiries'),
+                t('home.portfolioData.projects.portfolio.outcomes.featured'),
               ],
               category: {
                 id: 'portfolio',
-                name: 'Portfolio',
+                name: getCategoryTranslation('portfolio', 'projects'),
                 color: '#FF6B6B',
               },
               featured: true,
             },
             {
               id: '4',
-              title: 'Weather Dashboard',
-              description:
-                'Real-time weather dashboard with location-based forecasts and interactive maps.',
+              title: t('home.portfolioData.projects.weather.title'),
+              description: t('home.portfolioData.projects.weather.description'),
               technologies: ['React', 'TypeScript', 'Chart.js', 'OpenWeather API', 'Mapbox'],
               images: ['/images/projects/weather-1.jpg'],
               liveUrl: 'https://weather-dashboard.demo.com',
               repositoryUrl: 'https://github.com/username/weather-dashboard',
-              role: 'Frontend Developer',
+              role: t('home.portfolioData.projects.weather.role'),
               challenges: [
-                'Integrating multiple weather APIs',
-                'Creating responsive data visualizations',
-                'Handling geolocation and permissions',
+                t('home.portfolioData.projects.weather.challenges.apis'),
+                t('home.portfolioData.projects.weather.challenges.visualizations'),
+                t('home.portfolioData.projects.weather.challenges.geolocation'),
               ],
               outcomes: [
-                'Serves 10K+ daily active users',
-                'Accurate forecasts with 95% reliability',
-                'Positive user feedback (4.8/5 rating)',
+                t('home.portfolioData.projects.weather.outcomes.users'),
+                t('home.portfolioData.projects.weather.outcomes.accuracy'),
+                t('home.portfolioData.projects.weather.outcomes.feedback'),
               ],
               category: {
                 id: 'web-app',
-                name: 'Web Application',
+                name: getCategoryTranslation('web-app', 'projects'),
                 color: '#4FC08D',
               },
               featured: false,
             },
             {
               id: '5',
-              title: 'Microservices Architecture',
-              description:
-                'Scalable microservices architecture for a fintech application with Docker and Kubernetes.',
+              title: t('home.portfolioData.projects.microservices.title'),
+              description: t('home.portfolioData.projects.microservices.description'),
               technologies: ['Node.js', 'Docker', 'Kubernetes', 'Redis', 'PostgreSQL', 'AWS'],
               images: ['/images/projects/microservices-1.jpg'],
               repositoryUrl: 'https://github.com/username/fintech-microservices',
-              role: 'DevOps Engineer',
+              role: t('home.portfolioData.projects.microservices.role'),
               challenges: [
-                'Designing service communication patterns',
-                'Implementing distributed logging and monitoring',
-                'Ensuring data consistency across services',
+                t('home.portfolioData.projects.microservices.challenges.communication'),
+                t('home.portfolioData.projects.microservices.challenges.monitoring'),
+                t('home.portfolioData.projects.microservices.challenges.consistency'),
               ],
               outcomes: [
-                'Reduced deployment time by 70%',
-                'Improved system reliability to 99.95%',
-                'Enabled horizontal scaling for peak loads',
+                t('home.portfolioData.projects.microservices.outcomes.deployment'),
+                t('home.portfolioData.projects.microservices.outcomes.reliability'),
+                t('home.portfolioData.projects.microservices.outcomes.scaling'),
               ],
               category: {
                 id: 'infrastructure',
-                name: 'Infrastructure',
+                name: getCategoryTranslation('infrastructure', 'projects'),
                 color: '#FF9900',
               },
               featured: false,
@@ -498,22 +522,22 @@ export const usePortfolioStore = defineStore('portfolio', () => {
           categories: [
             {
               id: 'web-app',
-              name: 'Web Application',
+              name: getCategoryTranslation('web-app', 'projects'),
               color: '#4FC08D',
             },
             {
               id: 'api',
-              name: 'API Development',
+              name: getCategoryTranslation('api', 'projects'),
               color: '#339933',
             },
             {
               id: 'portfolio',
-              name: 'Portfolio',
+              name: getCategoryTranslation('portfolio', 'projects'),
               color: '#FF6B6B',
             },
             {
               id: 'infrastructure',
-              name: 'Infrastructure',
+              name: getCategoryTranslation('infrastructure', 'projects'),
               color: '#FF9900',
             },
           ],

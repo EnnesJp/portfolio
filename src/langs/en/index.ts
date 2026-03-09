@@ -90,6 +90,143 @@ export default {
         slideUp: 'Slide up animation',
       },
     },
+    portfolioData: {
+      companies: {
+        nubank: {
+          position: 'Software Engineer',
+          description:
+            'Leading development of enterprise web applications using modern technologies.',
+          achievements: {
+            performance: 'Improved application performance by 40%',
+            leadership: 'Led a team of 5 developers',
+            cicd: 'Implemented CI/CD pipeline reducing deployment time by 60%',
+          },
+        },
+        onfly: {
+          position: 'Full Stack Developer PL. II',
+          description:
+            'Developed custom web solutions for various clients across different industries.',
+          achievements: {
+            projects: 'Delivered 15+ successful projects',
+            onboarding: 'Reduced client onboarding time by 50%',
+            mentoring: 'Mentored junior developers',
+          },
+        },
+        nelogica: {
+          position: 'Software Developer',
+          description: 'Built responsive web applications and mobile-first interfaces.',
+          achievements: {
+            engagement: 'Increased user engagement by 35%',
+            designSystem: 'Implemented responsive design system',
+            performance: 'Optimized loading times by 45%',
+          },
+        },
+      },
+      certifications: {
+        awsSaa: {
+          name: 'AWS Certified Solutions Architect',
+          issuer: 'Amazon Web Services',
+        },
+        vueCertified: {
+          name: 'Vue.js Certified Developer',
+          issuer: 'Vue.js Foundation',
+        },
+        psm: {
+          name: 'Professional Scrum Master I',
+          issuer: 'Scrum.org',
+        },
+        gcpDev: {
+          name: 'Google Cloud Professional Developer',
+          issuer: 'Google Cloud',
+        },
+        mongoDev: {
+          name: 'MongoDB Certified Developer',
+          issuer: 'MongoDB University',
+        },
+      },
+      projects: {
+        ecommerce: {
+          title: 'E-Commerce Platform',
+          description:
+            'A modern e-commerce platform built with Vue.js and Node.js, featuring real-time inventory management, payment processing, and admin dashboard.',
+          role: 'Full Stack Developer',
+          challenges: {
+            inventory: 'Implementing real-time inventory synchronization',
+            queries: 'Optimizing database queries for large product catalogs',
+            compliance: 'Ensuring PCI compliance for payment processing',
+          },
+          outcomes: {
+            conversion: 'Increased conversion rate by 25%',
+            performance: 'Reduced page load time by 40%',
+            transactions: 'Successfully processed $100K+ in transactions',
+          },
+        },
+        taskApi: {
+          title: 'Task Management API',
+          description:
+            'RESTful API for task management with team collaboration features, built with Node.js and MongoDB.',
+          role: 'Backend Developer',
+          challenges: {
+            schema: 'Designing scalable database schema',
+            notifications: 'Implementing real-time notifications',
+            consistency: 'Ensuring data consistency across team operations',
+          },
+          outcomes: {
+            users: 'Supports 1000+ concurrent users',
+            uptime: 'Achieved 99.9% uptime',
+            efficiency: 'Reduced task completion time by 30%',
+          },
+        },
+        portfolio: {
+          title: 'Portfolio Website',
+          description:
+            'Personal portfolio website showcasing projects and skills, built with Vue.js and modern web technologies.',
+          role: 'Frontend Developer & Designer',
+          challenges: {
+            animations: 'Creating smooth animations and transitions',
+            responsive: 'Implementing responsive design across all devices',
+            optimization: 'Optimizing performance and accessibility',
+          },
+          outcomes: {
+            lighthouse: 'Achieved 95+ Lighthouse score',
+            inquiries: 'Increased client inquiries by 50%',
+            featured: 'Featured in design showcases',
+          },
+        },
+        weather: {
+          title: 'Weather Dashboard',
+          description:
+            'Real-time weather dashboard with location-based forecasts and interactive maps.',
+          role: 'Frontend Developer',
+          challenges: {
+            apis: 'Integrating multiple weather APIs',
+            visualizations: 'Creating responsive data visualizations',
+            geolocation: 'Handling geolocation and permissions',
+          },
+          outcomes: {
+            users: 'Serves 10K+ daily active users',
+            accuracy: 'Accurate forecasts with 95% reliability',
+            feedback: 'Positive user feedback (4.8/5 rating)',
+          },
+        },
+        microservices: {
+          title: 'Microservices Architecture',
+          description:
+            'Scalable microservices architecture for a fintech application with Docker and Kubernetes.',
+          role: 'DevOps Engineer',
+          challenges: {
+            communication: 'Designing service communication patterns',
+            monitoring: 'Implementing distributed logging and monitoring',
+            consistency: 'Ensuring data consistency across services',
+          },
+          outcomes: {
+            deployment: 'Reduced deployment time by 70%',
+            reliability: 'Improved system reliability to 99.95%',
+            scaling: 'Enabled horizontal scaling for peak loads',
+          },
+        },
+      },
+    },
     companiesSection: {
       title: 'Professional Experience',
       subtitle: "Companies I've worked with",

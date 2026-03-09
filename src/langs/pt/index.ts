@@ -90,6 +90,143 @@ export default {
         slideUp: 'Animação de deslizar para cima',
       },
     },
+    portfolioData: {
+      companies: {
+        nubank: {
+          position: 'Engenheiro de Software',
+          description:
+            'Liderando o desenvolvimento de aplicações web empresariais usando tecnologias modernas.',
+          achievements: {
+            performance: 'Melhorou o desempenho da aplicação em 40%',
+            leadership: 'Liderou uma equipe de 5 desenvolvedores',
+            cicd: 'Implementou pipeline CI/CD reduzindo o tempo de deploy em 60%',
+          },
+        },
+        onfly: {
+          position: 'Desenvolvedor Full Stack PL. II',
+          description:
+            'Desenvolveu soluções web personalizadas para vários clientes em diferentes indústrias.',
+          achievements: {
+            projects: 'Entregou mais de 15 projetos bem-sucedidos',
+            onboarding: 'Reduziu o tempo de integração de clientes em 50%',
+            mentoring: 'Mentorou desenvolvedores juniores',
+          },
+        },
+        nelogica: {
+          position: 'Desenvolvedor de Software',
+          description: 'Construiu aplicações web responsivas e interfaces mobile-first.',
+          achievements: {
+            engagement: 'Aumentou o engajamento do usuário em 35%',
+            designSystem: 'Implementou sistema de design responsivo',
+            performance: 'Otimizou tempos de carregamento em 45%',
+          },
+        },
+      },
+      certifications: {
+        awsSaa: {
+          name: 'AWS Certified Solutions Architect',
+          issuer: 'Amazon Web Services',
+        },
+        vueCertified: {
+          name: 'Desenvolvedor Certificado Vue.js',
+          issuer: 'Vue.js Foundation',
+        },
+        psm: {
+          name: 'Professional Scrum Master I',
+          issuer: 'Scrum.org',
+        },
+        gcpDev: {
+          name: 'Google Cloud Professional Developer',
+          issuer: 'Google Cloud',
+        },
+        mongoDev: {
+          name: 'Desenvolvedor Certificado MongoDB',
+          issuer: 'MongoDB University',
+        },
+      },
+      projects: {
+        ecommerce: {
+          title: 'Plataforma de E-Commerce',
+          description:
+            'Uma plataforma de e-commerce moderna construída com Vue.js e Node.js, com gerenciamento de inventário em tempo real, processamento de pagamentos e painel administrativo.',
+          role: 'Desenvolvedor Full Stack',
+          challenges: {
+            inventory: 'Implementação de sincronização de inventário em tempo real',
+            queries: 'Otimização de consultas de banco de dados para grandes catálogos de produtos',
+            compliance: 'Garantia de conformidade PCI para processamento de pagamentos',
+          },
+          outcomes: {
+            conversion: 'Aumentou a taxa de conversão em 25%',
+            performance: 'Reduziu o tempo de carregamento da página em 40%',
+            transactions: 'Processou com sucesso mais de $100K em transações',
+          },
+        },
+        taskApi: {
+          title: 'API de Gerenciamento de Tarefas',
+          description:
+            'API RESTful para gerenciamento de tarefas com recursos de colaboração em equipe, construída com Node.js e MongoDB.',
+          role: 'Desenvolvedor Backend',
+          challenges: {
+            schema: 'Design de esquema de banco de dados escalável',
+            notifications: 'Implementação de notificações em tempo real',
+            consistency: 'Garantia de consistência de dados em operações de equipe',
+          },
+          outcomes: {
+            users: 'Suporta mais de 1000 usuários simultâneos',
+            uptime: 'Alcançou 99,9% de uptime',
+            efficiency: 'Reduziu o tempo de conclusão de tarefas em 30%',
+          },
+        },
+        portfolio: {
+          title: 'Site de Portfólio',
+          description:
+            'Site de portfólio pessoal apresentando projetos e habilidades, construído com Vue.js e tecnologias web modernas.',
+          role: 'Desenvolvedor Frontend e Designer',
+          challenges: {
+            animations: 'Criação de animações e transições suaves',
+            responsive: 'Implementação de design responsivo em todos os dispositivos',
+            optimization: 'Otimização de desempenho e acessibilidade',
+          },
+          outcomes: {
+            lighthouse: 'Alcançou pontuação Lighthouse de 95+',
+            inquiries: 'Aumentou consultas de clientes em 50%',
+            featured: 'Destacado em vitrines de design',
+          },
+        },
+        weather: {
+          title: 'Painel de Clima',
+          description:
+            'Painel de clima em tempo real com previsões baseadas em localização e mapas interativos.',
+          role: 'Desenvolvedor Frontend',
+          challenges: {
+            apis: 'Integração de múltiplas APIs de clima',
+            visualizations: 'Criação de visualizações de dados responsivas',
+            geolocation: 'Gerenciamento de geolocalização e permissões',
+          },
+          outcomes: {
+            users: 'Atende mais de 10K usuários ativos diários',
+            accuracy: 'Previsões precisas com 95% de confiabilidade',
+            feedback: 'Feedback positivo dos usuários (4,8/5 de avaliação)',
+          },
+        },
+        microservices: {
+          title: 'Arquitetura de Microsserviços',
+          description:
+            'Arquitetura de microsserviços escalável para uma aplicação fintech com Docker e Kubernetes.',
+          role: 'Engenheiro DevOps',
+          challenges: {
+            communication: 'Design de padrões de comunicação entre serviços',
+            monitoring: 'Implementação de logging e monitoramento distribuído',
+            consistency: 'Garantia de consistência de dados entre serviços',
+          },
+          outcomes: {
+            deployment: 'Reduziu o tempo de deploy em 70%',
+            reliability: 'Melhorou a confiabilidade do sistema para 99,95%',
+            scaling: 'Habilitou escalonamento horizontal para cargas de pico',
+          },
+        },
+      },
+    },
     companiesSection: {
       title: 'Experiência Profissional',
       subtitle: 'Empresas com as quais trabalhei',

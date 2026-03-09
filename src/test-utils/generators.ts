@@ -1,16 +1,10 @@
 import { fc } from '@fast-check/vitest'
 
-/**
- * Generates non-empty, non-whitespace strings
- */
 export const nonEmptyString = (options: { minLength?: number; maxLength?: number } = {}) =>
   fc
     .string({ minLength: options.minLength || 1, maxLength: options.maxLength || 100 })
     .filter((s) => s.trim().length > 0)
 
-/**
- * Generates valid numeric values (excludes NaN, Infinity, extremely small values)
- */
 export const validNumber = (options: { min?: number; max?: number } = {}) =>
   fc
     .float({
@@ -21,9 +15,6 @@ export const validNumber = (options: { min?: number; max?: number } = {}) =>
     })
     .filter((n) => Math.abs(n) > 1e-10 || n === 0)
 
-/**
- * Generates navigation section data
- */
 export const navigationSection = () =>
   fc.record({
     id: nonEmptyString({ maxLength: 20 }),
@@ -32,9 +23,6 @@ export const navigationSection = () =>
     visible: fc.boolean(),
   })
 
-/**
- * Generates portfolio project data
- */
 export const portfolioProject = () =>
   fc.record({
     id: nonEmptyString({ maxLength: 50 }),
@@ -53,9 +41,6 @@ export const portfolioProject = () =>
     }),
   })
 
-/**
- * Generates skill data
- */
 export const skill = () =>
   fc.record({
     id: nonEmptyString({ maxLength: 50 }),

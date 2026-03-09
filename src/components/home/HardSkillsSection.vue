@@ -1,100 +1,104 @@
 <template>
-  <app-section
-    class="hard-skills-section"
-    :title="t('home.hardSkillsSection.title')"
-  >
-    <div class="hard-skills-controls">
-      <div class="category-filter">
-        <button
-          v-for="category in allCategories"
-          :key="category.id"
-          :class="['category-btn', { active: selectedCategory === category.id }]"
-          :style="{ '--category-color': category.color }"
-          @click="setSelectedCategory(category.id)"
+  <section class="hard-skills-section" id="hard-skills">
+    <div class="hard-skills-section__container">
+      <div class="hard-skills-section__header">
+        <h2 class="hard-skills-section__title">
+          {{ t('home.hardSkillsSection.title') }}
+        </h2>
+      </div>
+
+      <div class="hard-skills-controls">
+        <div class="category-filter">
+          <button
+            v-for="category in allCategories"
+            :key="category.id"
+            :class="['category-btn', { active: selectedCategory === category.id }]"
+            :style="{ '--category-color': category.color }"
+            @click="setSelectedCategory(category.id)"
+          >
+            {{ category.name }}
+          </button>
+        </div>
+
+        <div class="display-mode-toggle">
+          <button
+            v-for="mode in displayModes"
+            :key="mode.value"
+            :class="['mode-btn', { active: displayMode === mode.value }]"
+            @click="setDisplayMode(mode.value)"
+            :title="mode.label"
+          >
+            <component :is="mode.icon" />
+          </button>
+        </div>
+      </div>
+
+      <div :class="['skills-container', `skills-${displayMode}`]">
+        <div
+          v-for="skill in filteredSkills"
+          :key="skill.id"
+          class="skill-item"
+          :style="{ '--category-color': skill.category.color }"
         >
-          {{ category.name }}
-        </button>
+          <template v-if="displayMode !== 'chart'">
+            <div class="skill-header">
+              <div class="skill-icon" v-if="skill.icon">
+                <img :src="skill.icon" :alt="skill.name" />
+              </div>
+              <div class="skill-info">
+                <h3 class="skill-name">{{ skill.name }}</h3>
+                <span class="skill-category">{{ skill.category.name }}</span>
+              </div>
+            </div>
+
+            <div class="skill-details">
+              <div class="proficiency-bar">
+                <div class="proficiency-label">
+                  {{ t('home.hardSkillsSection.proficiency') }}
+                </div>
+                <div class="proficiency-track">
+                  <div
+                    class="proficiency-fill"
+                    :style="{ width: `${(skill.proficiency / 5) * 100}%` }"
+                  ></div>
+                </div>
+                <span class="proficiency-text">{{ skill.proficiency }}/5</span>
+              </div>
+
+              <div class="skill-stats">
+                <div class="stat">
+                  <span class="stat-value">{{ skill.yearsOfExperience }}</span>
+                  <span class="stat-label">{{ t('home.hardSkillsSection.years') }}</span>
+                </div>
+                <div class="stat" v-if="skill.projects">
+                  <span class="stat-value">{{ skill.projects }}</span>
+                  <span class="stat-label">{{ t('home.hardSkillsSection.projects') }}</span>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          <template v-else>
+            <div class="chart-skill">
+              <div class="chart-bar" :style="{ height: `${(skill.proficiency / 5) * 100}%` }">
+                <div class="chart-value">{{ skill.proficiency }}</div>
+              </div>
+              <div class="chart-label">{{ skill.name }}</div>
+            </div>
+          </template>
+        </div>
       </div>
 
-      <div class="display-mode-toggle">
-        <button
-          v-for="mode in displayModes"
-          :key="mode.value"
-          :class="['mode-btn', { active: displayMode === mode.value }]"
-          @click="setDisplayMode(mode.value)"
-          :title="mode.label"
-        >
-          <component :is="mode.icon" />
-        </button>
+      <div v-if="filteredSkills.length === 0" class="empty-state">
+        <p>{{ t('home.hardSkillsSection.noSkills') }}</p>
       </div>
     </div>
-
-    <div :class="['skills-container', `skills-${displayMode}`]">
-      <div
-        v-for="skill in filteredSkills"
-        :key="skill.id"
-        class="skill-item"
-        :style="{ '--category-color': skill.category.color }"
-      >
-        <template v-if="displayMode !== 'chart'">
-          <div class="skill-header">
-            <div class="skill-icon" v-if="skill.icon">
-              <img :src="skill.icon" :alt="skill.name" />
-            </div>
-            <div class="skill-info">
-              <h3 class="skill-name">{{ skill.name }}</h3>
-              <span class="skill-category">{{ skill.category.name }}</span>
-            </div>
-          </div>
-          
-          <div class="skill-details">
-            <div class="proficiency-bar">
-              <div class="proficiency-label">
-                {{ t('home.hardSkillsSection.proficiency') }}
-              </div>
-              <div class="proficiency-track">
-                <div 
-                  class="proficiency-fill"
-                  :style="{ width: `${(skill.proficiency / 5) * 100}%` }"
-                ></div>
-              </div>
-              <span class="proficiency-text">{{ skill.proficiency }}/5</span>
-            </div>
-            
-            <div class="skill-stats">
-              <div class="stat">
-                <span class="stat-value">{{ skill.yearsOfExperience }}</span>
-                <span class="stat-label">{{ t('home.hardSkillsSection.years') }}</span>
-              </div>
-              <div class="stat" v-if="skill.projects">
-                <span class="stat-value">{{ skill.projects }}</span>
-                <span class="stat-label">{{ t('home.hardSkillsSection.projects') }}</span>
-              </div>
-            </div>
-          </div>
-        </template>
-
-        <template v-else>
-          <div class="chart-skill">
-            <div class="chart-bar" :style="{ height: `${(skill.proficiency / 5) * 100}%` }">
-              <div class="chart-value">{{ skill.proficiency }}</div>
-            </div>
-            <div class="chart-label">{{ skill.name }}</div>
-          </div>
-        </template>
-      </div>
-    </div>
-
-    <div v-if="filteredSkills.length === 0" class="empty-state">
-      <p>{{ t('home.hardSkillsSection.noSkills') }}</p>
-    </div>
-  </app-section>
+  </section>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { AppSection } from '@components'
 import { usePortfolioStore } from '@/stores/portfolio'
 import type { SkillCategory } from '@/types'
 
@@ -104,7 +108,7 @@ const GridIcon = {
     <rect x="9" y="1" width="6" height="6" rx="1"/>
     <rect x="1" y="9" width="6" height="6" rx="1"/>
     <rect x="9" y="9" width="6" height="6" rx="1"/>
-  </svg>`
+  </svg>`,
 }
 
 const ListIcon = {
@@ -112,7 +116,7 @@ const ListIcon = {
     <rect x="1" y="2" width="14" height="2" rx="1"/>
     <rect x="1" y="7" width="14" height="2" rx="1"/>
     <rect x="1" y="12" width="14" height="2" rx="1"/>
-  </svg>`
+  </svg>`,
 }
 
 const ChartIcon = {
@@ -120,7 +124,7 @@ const ChartIcon = {
     <rect x="1" y="8" width="3" height="7" rx="1"/>
     <rect x="6" y="4" width="3" height="11" rx="1"/>
     <rect x="11" y="1" width="3" height="14" rx="1"/>
-  </svg>`
+  </svg>`,
 }
 
 const { t } = useI18n()
@@ -132,7 +136,7 @@ const displayMode = ref<'grid' | 'list' | 'chart'>('grid')
 const displayModes = [
   { value: 'grid' as const, label: 'Grid View', icon: GridIcon },
   { value: 'list' as const, label: 'List View', icon: ListIcon },
-  { value: 'chart' as const, label: 'Chart View', icon: ChartIcon }
+  { value: 'chart' as const, label: 'Chart View', icon: ChartIcon },
 ]
 
 const skills = computed(() => portfolioStore.skills)
@@ -140,14 +144,14 @@ const skillCategories = computed(() => portfolioStore.portfolioData?.skills?.cat
 
 const allCategories = computed(() => [
   { id: 'all', name: t('home.hardSkillsSection.allCategories'), color: '#666666' },
-  ...skillCategories.value
+  ...skillCategories.value,
 ])
 
 const filteredSkills = computed(() => {
   if (selectedCategory.value === 'all') {
     return skills.value
   }
-  return skills.value.filter(skill => skill.category.id === selectedCategory.value)
+  return skills.value.filter((skill) => skill.category.id === selectedCategory.value)
 })
 
 const setSelectedCategory = (categoryId: string) => {
@@ -161,11 +165,25 @@ const setDisplayMode = (mode: 'grid' | 'list' | 'chart') => {
 
 <style scoped lang="scss">
 .hard-skills-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
+  padding: 80px 24px;
+  background: var(--color-background);
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  &__title {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 16px 0;
+  }
 }
 
 .hard-skills-controls {
@@ -173,7 +191,7 @@ const setDisplayMode = (mode: 'grid' | 'list' | 'chart') => {
   flex-direction: column;
   gap: 1.5rem;
   width: 100%;
-  max-width: 1200px;
+  margin-bottom: 2rem;
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -240,7 +258,6 @@ const setDisplayMode = (mode: 'grid' | 'list' | 'chart') => {
 
 .skills-container {
   width: 100%;
-  max-width: 1200px;
 }
 
 .skills-grid {
@@ -443,34 +460,51 @@ const setDisplayMode = (mode: 'grid' | 'list' | 'chart') => {
   text-align: center;
   padding: 3rem;
   color: var(--color-text-secondary);
-  
+
   p {
     font-size: 1.125rem;
     margin: 0;
   }
 }
 
-// Responsive adjustments
+@media (max-width: 1024px) {
+  .hard-skills-section {
+    padding: 60px 20px;
+
+    &__title {
+      font-size: 40px;
+    }
+  }
+}
+
 @media (max-width: 768px) {
+  .hard-skills-section {
+    padding: 40px 16px;
+
+    &__title {
+      font-size: 32px;
+    }
+  }
+
   .skills-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .skills-chart {
     flex-wrap: wrap;
     min-height: 200px;
   }
-  
+
   .skill-stats {
     gap: 1rem;
   }
-  
+
   .proficiency-bar {
     flex-direction: column;
     align-items: stretch;
     gap: 0.5rem;
   }
-  
+
   .proficiency-label {
     min-width: auto;
   }
