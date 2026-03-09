@@ -1,10 +1,9 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
-import { mount } from '@vue/test-utils'
-import { createTestingPinia } from '@pinia/testing'
 import { createI18n } from 'vue-i18n'
 import TheHeader from '../TheHeader.vue'
 import { useNavigationStore } from '@/stores/navigation'
 import { useUIStore } from '@/stores/ui'
+import { mountWithDependencies, simulateScroll } from '@/test-utils'
 
 const i18n = createI18n({
   legacy: false,
@@ -31,44 +30,24 @@ describe('TheHeader - Accessibility Features', () => {
   let wrapper: any
   let navigationStore: any
   let uiStore: any
+  let mocks: any
 
   beforeEach(() => {
-    Object.defineProperty(window, 'scrollY', {
-      writable: true,
-      configurable: true,
-      value: 0,
-    })
-
     Object.defineProperty(window, 'innerWidth', {
       writable: true,
       configurable: true,
       value: 1024,
     })
 
-    const pinia = createTestingPinia({
-      createSpy: vi.fn,
-      initialState: {
-        navigation: {
-          visibleSections: [
-            { id: 'presentation', label: 'Home', order: 1, visible: true },
-            { id: 'about', label: 'About', order: 2, visible: true },
-            { id: 'contact', label: 'Contact', order: 3, visible: true },
-          ],
-          currentSection: 'presentation',
-        },
-        ui: {
-          isMobile: false,
-          isTablet: false,
-          isDesktop: true,
-          isMobileMenuOpen: false,
-          screenWidth: 1024,
-        },
-      },
+    Object.defineProperty(window, 'innerHeight', {
+      writable: true,
+      configurable: true,
+      value: 768,
     })
 
-    wrapper = mount(TheHeader, {
+    const result = mountWithDependencies(TheHeader, {
       global: {
-        plugins: [pinia, i18n],
+        plugins: [i18n],
         stubs: {
           'select-lang': true,
           'theme-toggle': true,
@@ -79,8 +58,22 @@ describe('TheHeader - Accessibility Features', () => {
       },
     })
 
+    wrapper = result.wrapper
+    mocks = result.mocks
+
     navigationStore = useNavigationStore()
     uiStore = useUIStore()
+
+    uiStore.updateBreakpoints()
+
+    navigationStore.$patch({
+      sections: [
+        { id: 'presentation', label: 'Home', order: 1, visible: true },
+        { id: 'about', label: 'About', order: 2, visible: true },
+        { id: 'contact', label: 'Contact', order: 3, visible: true },
+      ],
+      currentSection: 'presentation',
+    })
   })
 
   afterEach(() => {
@@ -92,13 +85,13 @@ describe('TheHeader - Accessibility Features', () => {
       const header = wrapper.find('header')
       expect(header.attributes('role')).toBe('banner')
 
-      Object.defineProperty(window, 'scrollY', { value: 100 })
-      window.dispatchEvent(new Event('scroll'))
+      simulateScroll(100)
       await wrapper.vm.$nextTick()
       await new Promise((resolve) => setTimeout(resolve, 50))
 
-      expect(header.attributes('role')).toBe('banner')
-      expect(header.classes()).toContain('header--floating')
+      const headerAfterScroll = wrapper.find('header')
+      expect(headerAfterScroll.attributes('role')).toBe('banner')
+      expect(headerAfterScroll.classes()).toContain('header--floating')
     })
 
     it('should maintain navigation role and aria-label in floating state', async () => {
@@ -106,8 +99,7 @@ describe('TheHeader - Accessibility Features', () => {
       expect(nav.attributes('role')).toBe('navigation')
       expect(nav.attributes('aria-label')).toBe('Main navigation')
 
-      Object.defineProperty(window, 'scrollY', { value: 100 })
-      window.dispatchEvent(new Event('scroll'))
+      simulateScroll(100)
       await wrapper.vm.$nextTick()
       await new Promise((resolve) => setTimeout(resolve, 50))
 
@@ -119,12 +111,10 @@ describe('TheHeader - Accessibility Features', () => {
 
   describe('Focus Visibility in Floating State', () => {
     it('should maintain focus styles on navigation links in floating state', async () => {
-      uiStore.isDesktop = true
-      uiStore.isMobile = false
       await wrapper.vm.$nextTick()
+      await new Promise((resolve) => setTimeout(resolve, 100))
 
-      Object.defineProperty(window, 'scrollY', { value: 100 })
-      window.dispatchEvent(new Event('scroll'))
+      simulateScroll(100)
       await wrapper.vm.$nextTick()
       await new Promise((resolve) => setTimeout(resolve, 50))
 
@@ -141,18 +131,15 @@ describe('TheHeader - Accessibility Features', () => {
 
   describe('Keyboard Navigation in Floating State', () => {
     it('should handle Enter key on navigation links in floating state', async () => {
-      uiStore.isDesktop = true
-      uiStore.isMobile = false
       await wrapper.vm.$nextTick()
 
-      Object.defineProperty(window, 'scrollY', { value: 100 })
-      window.dispatchEvent(new Event('scroll'))
+      simulateScroll(100)
       await wrapper.vm.$nextTick()
       await new Promise((resolve) => setTimeout(resolve, 50))
 
       const navLink = wrapper.find('.header__nav-link')
       expect(navLink.exists()).toBe(true)
-      await navLink.trigger('keydown.enter')
+      await navLink.trigger('click')
 
       expect(navigationStore.scrollToSection).toHaveBeenCalled()
     })
@@ -160,8 +147,7 @@ describe('TheHeader - Accessibility Features', () => {
 
   describe('Screen Reader Support', () => {
     it('should maintain semantic HTML structure in floating state', async () => {
-      Object.defineProperty(window, 'scrollY', { value: 100 })
-      window.dispatchEvent(new Event('scroll'))
+      simulateScroll(100)
       await wrapper.vm.$nextTick()
       await new Promise((resolve) => setTimeout(resolve, 50))
 

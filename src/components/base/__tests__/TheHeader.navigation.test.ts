@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
-import { mount, VueWrapper } from '@vue/test-utils'
-import { createTestingPinia } from '@pinia/testing'
+import { VueWrapper, flushPromises } from '@vue/test-utils'
 import { createI18n } from 'vue-i18n'
 import TheHeader from '../TheHeader.vue'
 import { useNavigationStore } from '@/stores/navigation'
 import { useUIStore } from '@/stores/ui'
+import { mountWithDependencies, setupStoreMocks } from '@/test-utils'
 
 const i18n = createI18n({
   legacy: false,
@@ -42,8 +42,9 @@ describe('TheHeader - Navigation Functionality Preservation', () => {
   let wrapper: VueWrapper<any>
   let navigationStore: any
   let uiStore: any
+  let mocks: ReturnType<typeof setupStoreMocks>
 
-  const setupWrapper = (scrollY: number = 0) => {
+  const setupWrapper = async (scrollY: number = 0) => {
     Object.defineProperty(window, 'scrollY', {
       writable: true,
       configurable: true,
@@ -53,23 +54,23 @@ describe('TheHeader - Navigation Functionality Preservation', () => {
     Object.defineProperty(window, 'innerWidth', {
       writable: true,
       configurable: true,
-      value: 1024, // Desktop width
+      value: 1024,
     })
 
-    const pinia = createTestingPinia({
-      createSpy: vi.fn,
-    })
+    mocks = setupStoreMocks()
 
-    wrapper = mount(TheHeader, {
+    const result = mountWithDependencies(TheHeader, {
       global: {
-        plugins: [pinia, i18n],
+        plugins: [i18n],
         stubs: {
           'select-lang': true,
           'theme-toggle': true,
         },
       },
+      storeMocks: mocks,
     })
 
+    wrapper = result.wrapper
     navigationStore = useNavigationStore()
     uiStore = useUIStore()
 
@@ -81,6 +82,10 @@ describe('TheHeader - Navigation Functionality Preservation', () => {
     ]
     navigationStore.currentSection = 'presentation'
 
+    window.dispatchEvent(new Event('scroll'))
+    await flushPromises()
+    await wrapper.vm.$nextTick()
+
     return wrapper
   }
 
@@ -91,15 +96,15 @@ describe('TheHeader - Navigation Functionality Preservation', () => {
   })
 
   describe('Desktop Navigation Clicks - Default State', () => {
-    beforeEach(() => {
-      setupWrapper(0) // Not floating (scrollY = 0)
+    beforeEach(async () => {
+      await setupWrapper(0)
     })
 
     it('should call scrollToSection when navigation link is clicked in default state', async () => {
       const navLinks = wrapper.findAll('.header__nav-link')
       expect(navLinks.length).toBeGreaterThan(0)
 
-      await navLinks[1].trigger('click') // Click "About"
+      await navLinks[1].trigger('click')
 
       expect(navigationStore.scrollToSection).toHaveBeenCalledWith('about')
     })
@@ -107,7 +112,7 @@ describe('TheHeader - Navigation Functionality Preservation', () => {
     it('should emit section-change event when navigation link is clicked in default state', async () => {
       const navLinks = wrapper.findAll('.header__nav-link')
 
-      await navLinks[2].trigger('click') // Click "Experience"
+      await navLinks[2].trigger('click')
 
       expect(wrapper.emitted('section-change')).toBeTruthy()
       expect(wrapper.emitted('section-change')[0]).toEqual(['companies'])
@@ -125,8 +130,8 @@ describe('TheHeader - Navigation Functionality Preservation', () => {
   })
 
   describe('Desktop Navigation Clicks - Floating State', () => {
-    beforeEach(() => {
-      setupWrapper(100) // Floating (scrollY > 50)
+    beforeEach(async () => {
+      await setupWrapper(100) // Floating (scrollY > 50)
     })
 
     it('should call scrollToSection when navigation link is clicked in floating state', async () => {
@@ -164,14 +169,14 @@ describe('TheHeader - Navigation Functionality Preservation', () => {
 
   describe('Navigation Functionality Equivalence', () => {
     it('should have identical desktop navigation behavior in both states', async () => {
-      const wrapperDefault = setupWrapper(0)
+      const wrapperDefault = await setupWrapper(0)
       const navLinksDefault = wrapperDefault.findAll('.header__nav-link')
       await navLinksDefault[1].trigger('click')
       const callsDefault = navigationStore.scrollToSection.mock.calls.length
 
       navigationStore.scrollToSection.mockClear()
       wrapperDefault.unmount()
-      const wrapperFloating = setupWrapper(100)
+      const wrapperFloating = await setupWrapper(100)
       const navLinksFloating = wrapperFloating.findAll('.header__nav-link')
       await navLinksFloating[1].trigger('click')
       const callsFloating = navigationStore.scrollToSection.mock.calls.length
@@ -184,13 +189,13 @@ describe('TheHeader - Navigation Functionality Preservation', () => {
     })
 
     it('should emit identical events in both states', async () => {
-      const wrapperDefault = setupWrapper(0)
+      const wrapperDefault = await setupWrapper(0)
       const navLinksDefault = wrapperDefault.findAll('.header__nav-link')
       await navLinksDefault[0].trigger('click')
       const eventsDefault = wrapperDefault.emitted('section-change')
 
       wrapperDefault.unmount()
-      const wrapperFloating = setupWrapper(100)
+      const wrapperFloating = await setupWrapper(100)
       const navLinksFloating = wrapperFloating.findAll('.header__nav-link')
       await navLinksFloating[0].trigger('click')
       const eventsFloating = wrapperFloating.emitted('section-change')
@@ -203,7 +208,7 @@ describe('TheHeader - Navigation Functionality Preservation', () => {
     })
 
     it('should handle multiple navigation clicks identically in both states', async () => {
-      const wrapperDefault = setupWrapper(0)
+      const wrapperDefault = await setupWrapper(0)
       const navLinksDefault = wrapperDefault.findAll('.header__nav-link')
       for (let i = 0; i < navLinksDefault.length; i++) {
         await navLinksDefault[i].trigger('click')
@@ -212,7 +217,7 @@ describe('TheHeader - Navigation Functionality Preservation', () => {
 
       navigationStore.scrollToSection.mockClear()
       wrapperDefault.unmount()
-      const wrapperFloating = setupWrapper(100)
+      const wrapperFloating = await setupWrapper(100)
       const navLinksFloating = wrapperFloating.findAll('.header__nav-link')
       for (let i = 0; i < navLinksFloating.length; i++) {
         await navLinksFloating[i].trigger('click')
@@ -229,7 +234,7 @@ describe('TheHeader - Navigation Functionality Preservation', () => {
 
   describe('Section Scrolling Behavior', () => {
     it('should scroll to correct section in default state', async () => {
-      setupWrapper(0)
+      await setupWrapper(0)
       const navLinks = wrapper.findAll('.header__nav-link')
 
       await navLinks[0].trigger('click')
@@ -246,7 +251,7 @@ describe('TheHeader - Navigation Functionality Preservation', () => {
     })
 
     it('should scroll to correct section in floating state', async () => {
-      setupWrapper(100)
+      await setupWrapper(100)
       const navLinks = wrapper.findAll('.header__nav-link')
 
       await navLinks[0].trigger('click')
@@ -264,35 +269,35 @@ describe('TheHeader - Navigation Functionality Preservation', () => {
   })
 
   describe('Floating State Visual Verification', () => {
-    it('should not have floating class when scrollY is 0', () => {
-      setupWrapper(0)
+    it('should not have floating class when scrollY is 0', async () => {
+      await setupWrapper(0)
       expect(wrapper.find('.header--floating').exists()).toBe(false)
     })
 
-    it('should not have floating class when scrollY is below threshold', () => {
-      setupWrapper(49)
+    it('should not have floating class when scrollY is below threshold', async () => {
+      await setupWrapper(49)
       expect(wrapper.find('.header--floating').exists()).toBe(false)
     })
 
-    it('should have floating class when scrollY is at threshold', () => {
-      setupWrapper(50)
+    it('should not have floating class when scrollY is at threshold (due to hysteresis)', async () => {
+      await setupWrapper(50)
+      expect(wrapper.find('.header--floating').exists()).toBe(false)
+    })
+
+    it('should have floating class when scrollY is above threshold', async () => {
+      await setupWrapper(100)
       expect(wrapper.find('.header--floating').exists()).toBe(true)
     })
 
-    it('should have floating class when scrollY is above threshold', () => {
-      setupWrapper(100)
-      expect(wrapper.find('.header--floating').exists()).toBe(true)
-    })
-
-    it('should have floating class when scrollY is far above threshold', () => {
-      setupWrapper(500)
+    it('should have floating class when scrollY is far above threshold', async () => {
+      await setupWrapper(500)
       expect(wrapper.find('.header--floating').exists()).toBe(true)
     })
   })
 
   describe('Navigation Preservation Across State Changes', () => {
     it('should maintain navigation functionality when transitioning from default to floating', async () => {
-      setupWrapper(0)
+      await setupWrapper(0)
       const navLinks = wrapper.findAll('.header__nav-link')
 
       await navLinks[0].trigger('click')
@@ -304,6 +309,7 @@ describe('TheHeader - Navigation Functionality Preservation', () => {
         value: 100,
       })
       window.dispatchEvent(new Event('scroll'))
+      await flushPromises()
       await wrapper.vm.$nextTick()
 
       await navLinks[1].trigger('click')
@@ -313,7 +319,7 @@ describe('TheHeader - Navigation Functionality Preservation', () => {
     })
 
     it('should maintain navigation functionality when transitioning from floating to default', async () => {
-      setupWrapper(100)
+      await setupWrapper(100)
       const navLinks = wrapper.findAll('.header__nav-link')
 
       await navLinks[0].trigger('click')
@@ -325,6 +331,7 @@ describe('TheHeader - Navigation Functionality Preservation', () => {
         value: 0,
       })
       window.dispatchEvent(new Event('scroll'))
+      await flushPromises()
       await wrapper.vm.$nextTick()
 
       await navLinks[1].trigger('click')

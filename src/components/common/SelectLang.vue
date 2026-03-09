@@ -226,10 +226,8 @@ onUnmounted(() => {
     &__icon {
       width: 20px;
       height: 20px;
-      border-radius: 3px;
       object-fit: cover;
       flex-shrink: 0;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
     &__text {
@@ -313,10 +311,8 @@ onUnmounted(() => {
     &__icon {
       width: 20px;
       height: 20px;
-      border-radius: 3px;
       object-fit: cover;
       flex-shrink: 0;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
     &__text {
