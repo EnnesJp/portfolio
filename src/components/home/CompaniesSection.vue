@@ -96,21 +96,6 @@ const setDisplayMode = (mode: 'timeline' | 'grid') => {
   displayMode.value = mode
 }
 
-const formatDate = (date: Date): string => {
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-  })
-}
-
-const formatPeriod = (company: Company): string => {
-  const start = formatDate(company.period.start)
-  const end = company.period.end
-    ? formatDate(company.period.end)
-    : t('home.companiesSection.company.current')
-  return `${start} - ${end}`
-}
-
 onMounted(() => {
   const sectionElement = document.getElementById('companies')
   if (sectionElement) {

@@ -343,10 +343,12 @@ onMounted(() => {
       object-fit: cover;
       object-position: center;
       border-radius: 20px;
+      transform: scale(1.5);
+      transform-origin: center bottom;
       transition: transform 0.3s ease;
 
       &:hover {
-        transform: scale(1.05);
+        transform: scale(1.55);
       }
     }
 

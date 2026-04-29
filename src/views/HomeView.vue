@@ -4,7 +4,7 @@
     <companies-section />
     <certifications-section />
     <hard-skills-section />
-    <projects-section />
+    <!-- <projects-section /> -->
     <contact-section />
   </main>
 </template>

@@ -59,3 +59,13 @@ npm run test:e2e
 ```sh
 npm run lint
 ```
+
+## Project Deploy
+
+```sh
+git add dist/ -f
+
+git commit -m "deploy"
+
+git subtree push --prefix dist origin gh-pages
+```

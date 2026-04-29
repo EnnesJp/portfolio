@@ -121,7 +121,7 @@ export const usePortfolioStore = defineStore('portfolio', () => {
               },
               description: t('home.portfolioData.companies.nubank.description'),
               achievements: [],
-              technologies: ['Clojure', 'Datomic'],
+              technologies: ['Clojure', 'Datomic', 'DynamoDB', 'Kafka'],
             },
             {
               id: '2',
