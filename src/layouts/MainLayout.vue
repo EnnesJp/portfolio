@@ -1,6 +1,7 @@
 <template>
   <div>
     <the-header />
+    <div class="header-spacer" />
 
     <RouterView />
 
@@ -12,3 +13,9 @@
 import { TheHeader, TheFooter } from '@components'
 import { RouterView } from 'vue-router'
 </script>
+
+<style scoped>
+.header-spacer {
+  height: var(--header-height, 64px);
+}
+</style>

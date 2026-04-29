@@ -221,10 +221,13 @@ onUnmounted(() => {
   background-color: var(--color-background);
   border-bottom: 1px solid var(--color-border);
   z-index: var(--z-fixed);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 
-  transition-property: padding, background-color, backdrop-filter, border-color, box-shadow,
-    transform, opacity;
-  transition-duration: 500ms;
+  transition-property: padding, background-color, backdrop-filter, border-color, box-shadow;
+  transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
   &--transparent {
@@ -233,24 +236,16 @@ onUnmounted(() => {
   }
 
   &--fixed {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    // already fixed by default
   }
 
   &--floating {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
     padding: var(--header-padding-floating) 0;
     background-color: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur));
     -webkit-backdrop-filter: blur(var(--glass-blur));
     border-bottom: 1px solid var(--glass-border);
     box-shadow: var(--glass-shadow);
-    transform: translateZ(0) scale(1);
     z-index: var(--z-fixed);
 
     @supports not (backdrop-filter: blur(10px)) {
