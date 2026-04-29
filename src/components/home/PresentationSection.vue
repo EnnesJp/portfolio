@@ -45,19 +45,22 @@
           </p>
 
           <div class="presentation-section__cta">
-            <img
-              src="@assets/images/icons/linkedin.svg"
-              alt="Linkedin"
-              loading="lazy"
+            <button
+              type="button"
+              :aria-label="'LinkedIn'"
               @click="goToSocialMedia(LINKEDIN_URL)"
               class="presentation-section__cta-button"
-            />
-            <img
-              src="@assets/images/icons/github.svg"
-              alt="Github"
+            >
+              <LinkedIn />
+            </button>
+            <button
+              type="button"
+              :aria-label="'GitHub'"
               @click="goToSocialMedia(GITHUB_URL)"
               class="presentation-section__cta-button"
-            />
+            >
+              <GitHub />
+            </button>
           </div>
         </div>
 
@@ -86,7 +89,7 @@
 </template>
 
 <script setup lang="ts">
-import { Arrow } from '@components'
+import { Arrow, LinkedIn, GitHub } from '@components'
 import { useI18n } from 'vue-i18n'
 import { usePortfolioStore } from '@/stores/portfolio'
 import { useNavigationStore } from '@/stores/navigation'
@@ -313,13 +316,22 @@ onMounted(() => {
       cursor: pointer;
       width: 24px;
       height: 24px;
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--color-text);
       transition:
         transform 0.2s ease,
-        opacity 0.2s ease;
+        color 0.2s ease;
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
 
       &:hover {
         transform: scale(1.2);
-        opacity: 0.8;
+        color: var(--color-primary);
       }
     }
   }

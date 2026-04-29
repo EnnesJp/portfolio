@@ -62,7 +62,6 @@ const formatDate = (date: Date): string => {
 
   &:hover {
     border-color: var(--color-primary);
-    background: var(--color-surface);
   }
 
   &__header {

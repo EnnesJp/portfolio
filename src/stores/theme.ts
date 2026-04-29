@@ -151,8 +151,7 @@ export const useThemeStore = defineStore('theme', () => {
     if (saved && ['light', 'dark'].includes(saved)) {
       setTheme(saved)
     } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      setTheme(prefersDark ? 'dark' : 'light')
+      setTheme('light')
     }
     applyTheme()
   }

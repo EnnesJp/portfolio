@@ -41,6 +41,7 @@ export default {
     companies: 'Experience',
     certifications: 'Certifications',
     skills: 'Skills',
+    'hard-skills': 'Skills',
     projects: 'Projects',
     contact: 'Contact',
     toggleMenu: 'Toggle navigation menu',
@@ -75,9 +76,9 @@ export default {
     presentationSection: {
       greeting: "Hello, I'm",
       name: 'João Pedro Ennes',
-      title: 'Full Stack Developer',
+      title: 'Software Engineer',
       summary:
-        'Passionate about creating amazing digital experiences with modern technologies and clean code.',
+        'Passionate about creating amazing experiences with modern technologies and clean code.',
       cta: {
         viewWork: 'View My Work',
         getInTouch: 'Get In Touch',
@@ -119,7 +120,7 @@ export default {
       },
       certifications: {
         awsSaa: {
-          name: 'AWS Certified Solutions Architect',
+          name: 'AWS Certified Cloud Practitioner',
           issuer: 'Amazon Web Services',
         },
         vueCertified: {
@@ -137,6 +138,10 @@ export default {
         mongoDev: {
           name: 'MongoDB Certified Developer',
           issuer: 'MongoDB University',
+        },
+        php: {
+          name: 'Formação PHP',
+          issuer: 'Alura',
         },
       },
       projects: {
@@ -311,6 +316,10 @@ export default {
       projects: 'Projects',
       experience: 'Experience Level',
       noSkills: 'No skills found for the selected category.',
+      empty: {
+        title: 'No skills found',
+        description: 'No skills match the selected filters.',
+      },
       displayModes: {
         grid: 'Grid View',
         list: 'List View',

@@ -1,87 +1,88 @@
 <template>
-  <section class="contact-section-wrapper" id="contact">
-    <div class="contact-section-wrapper__container">
-      <div class="contact-section-wrapper__header">
-        <h2 class="contact-section-wrapper__title">
-          {{ t('home.contactSection.title') }}
-        </h2>
+  <AppSection section-id="contact" background="primary" :title="t('home.contactSection.title')">
+    <div class="contact-section">
+      <div class="contact-section__info">
+        <div class="contact-section__description">
+          <p class="contact-section__description-text">
+            {{ t('home.contactSection.description') }}
+          </p>
+
+          <div class="contact-section__availability-status">
+            <div
+              class="contact-section__status-indicator"
+              :class="`contact-section__status-indicator--${availabilityClass}`"
+            ></div>
+            <span class="contact-section__status-text">{{ availabilityText }}</span>
+          </div>
+        </div>
+
+        <div class="contact-section__contact-methods">
+          <h3 class="contact-section__contact-methods-title">
+            {{ t('home.contactSection.contactMethods.title') }}
+          </h3>
+
+          <div class="contact-section__contact-methods-list">
+            <div
+              v-for="method in contactMethods"
+              :key="method.id"
+              class="contact-section__contact-method"
+            >
+              <div class="contact-section__contact-method-icon">
+                <component :is="getIconComponent(method.type)" />
+              </div>
+              <div class="contact-section__contact-method-content">
+                <span class="contact-section__contact-method-label">{{ method.label }}</span>
+                <a
+                  :href="getContactLink(method)"
+                  class="contact-section__contact-method-value"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {{ method.value }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-section__social-links" v-if="socialLinks.length > 0">
+          <h3 class="contact-section__social-links-title">
+            {{ t('home.contactSection.socialLinks.title') }}
+          </h3>
+
+          <div class="contact-section__social-links-list">
+            <a
+              v-for="link in socialLinks"
+              :key="link.id"
+              :href="link.url"
+              class="contact-section__social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              :title="link.platform"
+            >
+              <component :is="getSocialIconComponent(link.platform)" />
+              <span class="contact-section__social-link-label">{{ link.platform }}</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="contact-section__location-info">
+          <div class="contact-section__location-info-item">
+            <div class="contact-section__location-info-icon">
+              <LocationIcon />
+            </div>
+            <span class="contact-section__location-info-text">
+              {{ t('home.contactSection.socialInfos.location') }}
+            </span>
+          </div>
+        </div>
       </div>
 
-      <div class="contact-section">
-        <div class="contact-section__info">
-          <div class="contact-section__description">
-            <p class="description-text">
-              {{ t('home.contactSection.description') }}
-            </p>
-
-            <div class="availability-status">
-              <div class="status-indicator" :class="availabilityClass"></div>
-              <span class="status-text">{{ availabilityText }}</span>
-            </div>
-          </div>
-
-          <div class="contact-methods">
-            <h3 class="contact-methods__title">
-              {{ t('home.contactSection.contactMethods.title') }}
-            </h3>
-
-            <div class="contact-methods__list">
-              <div v-for="method in contactMethods" :key="method.id" class="contact-method">
-                <div class="contact-method__icon">
-                  <component :is="getIconComponent(method.type)" />
-                </div>
-                <div class="contact-method__content">
-                  <span class="contact-method__label">{{ method.label }}</span>
-                  <a
-                    :href="getContactLink(method)"
-                    class="contact-method__value"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {{ method.value }}
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="social-links" v-if="socialLinks.length > 0">
-            <h3 class="social-links__title">{{ t('home.contactSection.socialLinks.title') }}</h3>
-
-            <div class="social-links__list">
-              <a
-                v-for="link in socialLinks"
-                :key="link.id"
-                :href="link.url"
-                class="social-link"
-                target="_blank"
-                rel="noopener noreferrer"
-                :title="link.platform"
-              >
-                <component :is="getSocialIconComponent(link.platform)" />
-                <span class="social-link__label">{{ link.platform }}</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="location-info">
-            <div class="location-info__item">
-              <div class="location-info__icon">
-                <LocationIcon />
-              </div>
-              <span class="location-info__text">
-                {{ t('home.contactSection.socialInfos.location') }}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div class="contact-section__form">
-          <contact-form />
-        </div>
+      <div class="contact-section__form">
+        <contact-form />
       </div>
     </div>
-  </section>
+  </AppSection>
 </template>
 
 <script setup lang="ts">
@@ -89,6 +90,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { ContactForm } from '@components'
 import { usePortfolioStore } from '@/stores/portfolio'
+import AppSection from '@/components/shared/AppSection.vue'
 
 const { t } = useI18n()
 const portfolioStore = usePortfolioStore()
@@ -234,130 +236,99 @@ const LinkIcon = {
 </script>
 
 <style scoped lang="scss">
-.contact-section-wrapper {
-  padding: 80px 24px;
-  background: var(--color-background);
-
-  &__container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  &__header {
-    text-align: center;
-    margin-bottom: 60px;
-  }
-
-  &__title {
-    font-size: 48px;
-    font-weight: 700;
-    color: var(--color-text);
-    margin: 0 0 16px 0;
-  }
-}
-
 .contact-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  gap: 64px;
   width: 100%;
 
   @media (max-width: 968px) {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 48px;
   }
 
   &__info {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 32px;
   }
 
-  &__description {
-    .description-text {
-      font-size: 1.25rem;
-      font-weight: 300;
-      color: var(--color-text);
-      line-height: 1.6;
-      margin-bottom: 1.5rem;
-    }
+  &__description-text {
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--color-text);
+    line-height: 1.6;
+    margin-bottom: 24px;
   }
 
-  &__form {
+  &__availability-status {
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: var(--color-background);
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
   }
-}
 
-.availability-status {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem;
-  background: var(--color-surface);
-  border-radius: 0.75rem;
-  border: 1px solid var(--color-border);
-
-  .status-indicator {
+  &__status-indicator {
     width: 12px;
     height: 12px;
     border-radius: 50%;
 
-    &.available {
+    &--available {
       background-color: #10b981;
       box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
     }
 
-    &.busy {
+    &--busy {
       background-color: #f59e0b;
       box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
     }
 
-    &.unavailable {
+    &--unavailable {
       background-color: #ef4444;
       box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
     }
   }
 
-  .status-text {
-    font-size: 0.875rem;
+  &__status-text {
+    font-size: 14px;
     font-weight: 500;
     color: var(--color-text);
   }
-}
 
-.contact-methods {
-  &__title {
-    font-size: 1.125rem;
+  &__contact-methods-title {
+    font-size: 18px;
     font-weight: 600;
     color: var(--color-text);
-    margin-bottom: 1rem;
+    margin-bottom: 16px;
   }
 
-  &__list {
+  &__contact-methods-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-  }
-}
-
-.contact-method {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background: var(--color-surface);
-  border-radius: 0.75rem;
-  border: 1px solid var(--color-border);
-  transition: all 0.2s ease;
-
-  &:hover {
-    border-color: var(--color-primary);
-    transform: translateY(-2px);
+    gap: 16px;
   }
 
-  &__icon {
+  &__contact-method {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: var(--color-background);
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease;
+
+    &:hover {
+      border-color: var(--color-primary);
+    }
+  }
+
+  &__contact-method-icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -365,24 +336,24 @@ const LinkIcon = {
     height: 40px;
     background: var(--color-primary);
     color: white;
-    border-radius: 0.5rem;
+    border-radius: 8px;
     flex-shrink: 0;
   }
 
-  &__content {
+  &__contact-method-content {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 4px;
   }
 
-  &__label {
-    font-size: 0.875rem;
+  &__contact-method-label {
+    font-size: 14px;
     font-weight: 500;
     color: var(--color-text-secondary);
   }
 
-  &__value {
-    font-size: 1rem;
+  &__contact-method-value {
+    font-size: 16px;
     font-weight: 600;
     color: var(--color-text);
     text-decoration: none;
@@ -392,63 +363,58 @@ const LinkIcon = {
       color: var(--color-primary);
     }
   }
-}
 
-.social-links {
-  &__title {
-    font-size: 1.125rem;
+  &__social-links-title {
+    font-size: 18px;
     font-weight: 600;
     color: var(--color-text);
-    margin-bottom: 1rem;
+    margin-bottom: 16px;
   }
 
-  &__list {
+  &__social-links-list {
     display: flex;
-    gap: 1rem;
+    gap: 16px;
     flex-wrap: wrap;
   }
-}
 
-.social-link {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 0.5rem;
-  text-decoration: none;
-  color: var(--color-text);
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  &__social-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 500;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease;
 
-  &:hover {
-    background: var(--color-primary);
-    color: white;
-    border-color: var(--color-primary);
-    transform: translateY(-2px);
+    &:hover {
+      border-color: var(--color-primary);
+    }
   }
 
-  &__label {
+  &__social-link-label {
     @media (max-width: 480px) {
       display: none;
     }
   }
-}
 
-.location-info {
-  &__item {
+  &__location-info-item {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 1rem;
-    background: var(--color-surface);
-    border-radius: 0.75rem;
+    gap: 12px;
+    padding: 16px;
+    background: var(--color-background);
+    border-radius: 12px;
     border: 1px solid var(--color-border);
   }
 
-  &__icon {
+  &__location-info-icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -458,31 +424,19 @@ const LinkIcon = {
     flex-shrink: 0;
   }
 
-  &__text {
-    font-size: 0.875rem;
+  &__location-info-text {
+    font-size: 14px;
     color: var(--color-text-secondary);
   }
-}
 
-@media (max-width: 1024px) {
-  .contact-section-wrapper {
-    padding: 60px 20px;
-
-    &__title {
-      font-size: 40px;
-    }
+  &__form {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
   }
 }
 
 @media (max-width: 768px) {
-  .contact-section-wrapper {
-    padding: 40px 16px;
-
-    &__title {
-      font-size: 32px;
-    }
-  }
-
   .contact-section {
     &__info {
       order: 2;
@@ -493,7 +447,7 @@ const LinkIcon = {
     }
   }
 
-  .social-links__list {
+  .contact-section__social-links-list {
     justify-content: center;
   }
 }

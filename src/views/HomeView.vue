@@ -2,8 +2,8 @@
   <main>
     <presentation-section />
     <companies-section />
-    <certifications-section />
     <hard-skills-section />
+    <certifications-section />
     <!-- <projects-section /> -->
     <contact-section />
   </main>

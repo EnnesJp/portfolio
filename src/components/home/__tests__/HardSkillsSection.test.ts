@@ -14,6 +14,10 @@ const i18n = createI18n({
         hardSkillsSection: {
           title: 'Technical Skills',
           noSkills: 'No skills found for the selected category.',
+          empty: {
+            title: 'No skills found',
+            description: 'No skills match the selected filters.',
+          },
         },
       },
     },
@@ -61,6 +65,13 @@ vi.mock('@/stores/portfolio', () => ({
   }),
 }))
 
+vi.mock('@/composables/useEntranceAnimation', () => ({
+  useEntranceAnimation: () => ({
+    sectionRef: { value: null },
+    isVisible: { value: true },
+  }),
+}))
+
 function mountSection() {
   const pinia = createPinia()
   setActivePinia(pinia)
@@ -77,77 +88,49 @@ describe('HardSkillsSection', () => {
     mockSkills = createMockSkills()
   })
 
-  describe('section title', () => {
-    it('renders section title using i18n key', () => {
+  describe('uses AppSection wrapper', () => {
+    it('renders AppSection with correct props', () => {
       const wrapper = mountSection()
 
-      const title = wrapper.find('.hard-skills-section__title')
-      expect(title.exists()).toBe(true)
-      expect(title.text()).toBe('Technical Skills')
+      const appSection = wrapper.findComponent({ name: 'AppSection' })
+      expect(appSection.exists()).toBe(true)
+      expect(appSection.props('sectionId')).toBe('hard-skills')
+      expect(appSection.props('background')).toBe('primary')
+      expect(appSection.props('title')).toBe('Technical Skills')
     })
   })
 
-  describe('does NOT render removed elements', () => {
-    it('does not render display mode toggle', () => {
-      const wrapper = mountSection()
-
-      expect(wrapper.find('.hard-skills-section__display-modes').exists()).toBe(false)
-      expect(wrapper.find('.hard-skills-section__mode-btn').exists()).toBe(false)
-      expect(wrapper.findAll('svg').length).toBe(0)
-    })
-
-    it('does not render category filter buttons', () => {
-      const wrapper = mountSection()
-
-      expect(wrapper.find('.hard-skills-section__filters').exists()).toBe(false)
-      expect(wrapper.find('.hard-skills-section__filter-btn').exists()).toBe(false)
-    })
-
-    it('does not render proficiency bar', () => {
-      const wrapper = mountSection()
-
-      expect(wrapper.find('.skill-item__bar').exists()).toBe(false)
-      expect(wrapper.find('.skill-item__progress').exists()).toBe(false)
-      expect(wrapper.find('.skill-item__bar-track').exists()).toBe(false)
-      expect(wrapper.find('.skill-item__bar-fill').exists()).toBe(false)
-    })
-
-    it('does not render stats counters (years, projects)', () => {
-      const wrapper = mountSection()
-
-      expect(wrapper.find('.skill-item__stats').exists()).toBe(false)
-    })
-
-    it('does not render chart view', () => {
-      const wrapper = mountSection()
-
-      expect(wrapper.find('.hard-skills-section__chart').exists()).toBe(false)
-    })
-  })
-
-  describe('renders skills with proficiency dots', () => {
+  describe('renders skills with BEM-scoped class names', () => {
     it('renders all skills from the store', () => {
       const wrapper = mountSection()
 
-      const skillItems = wrapper.findAll('.skill-item')
+      const skillItems = wrapper.findAll('.hard-skills-section__skill-item')
       expect(skillItems).toHaveLength(3)
     })
 
-    it('renders skill names', () => {
+    it('renders skill names with BEM class', () => {
       const wrapper = mountSection()
 
-      const names = wrapper.findAll('.skill-item__name')
+      const names = wrapper.findAll('.hard-skills-section__skill-name')
       expect(names[0].text()).toBe('Vue.js')
       expect(names[1].text()).toBe('TypeScript')
       expect(names[2].text()).toBe('Python')
     })
 
+    it('renders skill categories with BEM class', () => {
+      const wrapper = mountSection()
+
+      const categories = wrapper.findAll('.hard-skills-section__skill-category')
+      expect(categories[0].text()).toBe('Frontend')
+      expect(categories[2].text()).toBe('Backend')
+    })
+
     it('renders 5 proficiency dots per skill', () => {
       const wrapper = mountSection()
 
-      const skillItems = wrapper.findAll('.skill-item')
+      const skillItems = wrapper.findAll('.hard-skills-section__skill-item')
       skillItems.forEach((item) => {
-        const dots = item.findAll('.skill-item__dot')
+        const dots = item.findAll('.hard-skills-section__skill-dot')
         expect(dots).toHaveLength(5)
       })
     })
@@ -165,8 +148,8 @@ describe('HardSkillsSection', () => {
       ]
       const wrapper = mountSection()
 
-      const dots = wrapper.findAll('.skill-item__dot')
-      const filledDots = wrapper.findAll('.skill-item__dot--filled')
+      const dots = wrapper.findAll('.hard-skills-section__skill-dot')
+      const filledDots = wrapper.findAll('.hard-skills-section__skill-dot--filled')
       expect(dots).toHaveLength(5)
       expect(filledDots).toHaveLength(3)
     })
@@ -184,7 +167,7 @@ describe('HardSkillsSection', () => {
       ]
       const wrapper = mountSection()
 
-      const filledDots = wrapper.findAll('.skill-item__dot--filled')
+      const filledDots = wrapper.findAll('.hard-skills-section__skill-dot--filled')
       expect(filledDots).toHaveLength(5)
     })
 
@@ -201,19 +184,30 @@ describe('HardSkillsSection', () => {
       ]
       const wrapper = mountSection()
 
-      const proficiency = wrapper.find('.skill-item__proficiency')
+      const proficiency = wrapper.find('.hard-skills-section__skill-proficiency')
       expect(proficiency.attributes('aria-label')).toBe('3 out of 5')
     })
   })
 
   describe('empty state', () => {
-    it('shows empty state when skills array is empty', () => {
+    it('shows empty state with icon, title, and description when skills array is empty', () => {
       mockSkills = []
       const wrapper = mountSection()
 
       const emptyState = wrapper.find('.hard-skills-section__empty')
       expect(emptyState.exists()).toBe(true)
-      expect(emptyState.text()).toContain('No skills found')
+
+      const icon = wrapper.find('.hard-skills-section__empty-icon')
+      expect(icon.exists()).toBe(true)
+      expect(icon.find('svg').exists()).toBe(true)
+
+      const title = wrapper.find('.hard-skills-section__empty-title')
+      expect(title.exists()).toBe(true)
+      expect(title.text()).toBe('No skills found')
+
+      const description = wrapper.find('.hard-skills-section__empty-description')
+      expect(description.exists()).toBe(true)
+      expect(description.text()).toBe('No skills match the selected filters.')
     })
 
     it('does not show grid when skills are empty', () => {
@@ -221,6 +215,22 @@ describe('HardSkillsSection', () => {
       const wrapper = mountSection()
 
       expect(wrapper.find('.hard-skills-section__grid').exists()).toBe(false)
+    })
+  })
+
+  describe('does NOT render removed elements', () => {
+    it('does not render display mode toggle', () => {
+      const wrapper = mountSection()
+
+      expect(wrapper.find('.hard-skills-section__display-modes').exists()).toBe(false)
+      expect(wrapper.find('.hard-skills-section__mode-btn').exists()).toBe(false)
+    })
+
+    it('does not render category filter buttons', () => {
+      const wrapper = mountSection()
+
+      expect(wrapper.find('.hard-skills-section__filters').exists()).toBe(false)
+      expect(wrapper.find('.hard-skills-section__filter-btn').exists()).toBe(false)
     })
   })
 })

@@ -1,48 +1,44 @@
 <template>
-  <section class="certifications-section" id="certifications">
-    <div class="certifications-section__container">
-      <div class="certifications-section__header">
-        <h2 class="certifications-section__title">
-          {{ t('home.certificationsSection.title') }}
-        </h2>
-      </div>
-
-      <div class="certifications-section__content" v-if="certifications.length > 0">
-        <div class="certifications-section__grid">
-          <CertificationCard
-            v-for="certification in sortedCertifications"
-            :key="certification.id"
-            :certification="certification"
-          />
-        </div>
-      </div>
-
-      <div v-else class="certifications-section__empty">
-        <div class="certifications-section__empty-icon">
-          <svg
-            width="64"
-            height="64"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </div>
-        <h3 class="certifications-section__empty-title">
-          {{ t('home.certificationsSection.empty.title') }}
-        </h3>
-        <p class="certifications-section__empty-description">
-          {{ t('home.certificationsSection.empty.description') }}
-        </p>
+  <AppSection
+    section-id="certifications"
+    background="surface"
+    :title="t('home.certificationsSection.title')"
+  >
+    <div class="certifications-section__content" v-if="certifications.length > 0">
+      <div class="certifications-section__grid">
+        <CertificationCard
+          v-for="certification in sortedCertifications"
+          :key="certification.id"
+          :certification="certification"
+        />
       </div>
     </div>
-  </section>
+
+    <div v-else class="certifications-section__empty">
+      <div class="certifications-section__empty-icon">
+        <svg
+          width="64"
+          height="64"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+      <h3 class="certifications-section__empty-title">
+        {{ t('home.certificationsSection.empty.title') }}
+      </h3>
+      <p class="certifications-section__empty-description">
+        {{ t('home.certificationsSection.empty.description') }}
+      </p>
+    </div>
+  </AppSection>
 </template>
 
 <script setup lang="ts">
@@ -52,6 +48,7 @@ import { useNavigationStore } from '@/stores/navigation'
 import { storeToRefs } from 'pinia'
 import { computed, onMounted } from 'vue'
 import CertificationCard from './CertificationCard.vue'
+import AppSection from '@/components/shared/AppSection.vue'
 
 const { t } = useI18n()
 const portfolioStore = usePortfolioStore()
@@ -81,26 +78,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .certifications-section {
-  padding: 80px 24px;
-  background: var(--color-surface);
-
-  &__container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  &__header {
-    text-align: center;
-    margin-bottom: 60px;
-  }
-
-  &__title {
-    font-size: 48px;
-    font-weight: 700;
-    color: var(--color-text);
-    margin: 0;
-  }
-
   &__content {
     position: relative;
   }
@@ -145,12 +122,6 @@ onMounted(() => {
 
 @media (max-width: 1024px) {
   .certifications-section {
-    padding: 60px 20px;
-
-    &__title {
-      font-size: 40px;
-    }
-
     &__grid {
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 24px;
@@ -160,12 +131,6 @@ onMounted(() => {
 
 @media (max-width: 768px) {
   .certifications-section {
-    padding: 40px 16px;
-
-    &__title {
-      font-size: 32px;
-    }
-
     &__grid {
       grid-template-columns: 1fr;
       gap: 20px;

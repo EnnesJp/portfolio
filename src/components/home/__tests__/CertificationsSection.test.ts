@@ -98,31 +98,22 @@ describe('CertificationsSection', () => {
     mockCertificationsRef.value = createMockCertifications()
   })
 
-  describe('section title', () => {
-    it('renders section title using i18n key', () => {
+  describe('section structure', () => {
+    it('renders using AppSection with correct props', () => {
       const wrapper = mountSection()
 
-      const title = wrapper.find('.certifications-section__title')
-      expect(title.exists()).toBe(true)
-      expect(title.text()).toBe('Certifications & Credentials')
-    })
-  })
-
-  describe('does NOT render removed elements', () => {
-    it('does not render subtitle', () => {
-      const wrapper = mountSection()
-
-      const header = wrapper.find('.certifications-section__header')
-      expect(header.find('p').exists()).toBe(false)
-      expect(wrapper.find('.certifications-section__subtitle').exists()).toBe(false)
+      const appSection = wrapper.findComponent({ name: 'AppSection' })
+      expect(appSection.exists()).toBe(true)
+      expect(appSection.props('sectionId')).toBe('certifications')
+      expect(appSection.props('background')).toBe('surface')
+      expect(appSection.props('title')).toBe('Certifications & Credentials')
     })
 
-    it('does not render filter buttons', () => {
+    it('does not render its own section header or title elements', () => {
       const wrapper = mountSection()
 
-      expect(wrapper.find('.certifications-section__filters').exists()).toBe(false)
-      expect(wrapper.find('.certifications-section__filter-btn').exists()).toBe(false)
-      expect(wrapper.find('.certifications-section__filter-group').exists()).toBe(false)
+      expect(wrapper.find('.certifications-section__header').exists()).toBe(false)
+      expect(wrapper.find('.certifications-section__title').exists()).toBe(false)
     })
   })
 
@@ -142,6 +133,16 @@ describe('CertificationsSection', () => {
       expect(text).toContain('Vue.js Certified Developer')
       expect(text).toContain('Professional Scrum Master I')
     })
+
+    it('renders certifications sorted by date (newest first)', () => {
+      const wrapper = mountSection()
+
+      const cards = wrapper.findAllComponents({ name: 'CertificationCard' })
+      const names = cards.map((card) => card.props('certification').name)
+      expect(names[0]).toBe('AWS Certified Solutions Architect')
+      expect(names[1]).toBe('Vue.js Certified Developer')
+      expect(names[2]).toBe('Professional Scrum Master I')
+    })
   })
 
   describe('empty state', () => {
@@ -152,6 +153,15 @@ describe('CertificationsSection', () => {
       const emptyState = wrapper.find('.certifications-section__empty')
       expect(emptyState.exists()).toBe(true)
       expect(emptyState.text()).toContain('No certifications found')
+    })
+
+    it('empty state follows standard pattern with icon, title, and description', () => {
+      mockCertificationsRef.value = []
+      const wrapper = mountSection()
+
+      expect(wrapper.find('.certifications-section__empty-icon').exists()).toBe(true)
+      expect(wrapper.find('.certifications-section__empty-title').exists()).toBe(true)
+      expect(wrapper.find('.certifications-section__empty-description').exists()).toBe(true)
     })
 
     it('does not show grid when certifications are empty', () => {

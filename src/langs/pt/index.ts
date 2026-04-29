@@ -41,6 +41,7 @@ export default {
     companies: 'Experiência',
     certifications: 'Certificações',
     skills: 'Habilidades',
+    'hard-skills': 'Habilidades',
     projects: 'Projetos',
     contact: 'Contato',
     toggleMenu: 'Alternar menu de navegação',
@@ -75,9 +76,9 @@ export default {
     presentationSection: {
       greeting: 'Olá, eu sou',
       name: 'João Pedro Ennes',
-      title: 'Desenvolvedor Full Stack',
+      title: 'Engenheiro de Software',
       summary:
-        'Apaixonado por criar experiências digitais incríveis com tecnologias modernas e código limpo.',
+        'Apaixonado por criar experiências incríveis com tecnologias modernas e código limpo.',
       cta: {
         viewWork: 'Ver Meu Trabalho',
         getInTouch: 'Entre em Contato',
@@ -120,7 +121,7 @@ export default {
       },
       certifications: {
         awsSaa: {
-          name: 'AWS Certified Solutions Architect',
+          name: 'AWS Certified Cloud Practitioner',
           issuer: 'Amazon Web Services',
         },
         vueCertified: {
@@ -312,6 +313,10 @@ export default {
       projects: 'Projetos',
       experience: 'Nível de Experiência',
       noSkills: 'Nenhuma habilidade encontrada para a categoria selecionada.',
+      empty: {
+        title: 'Nenhuma habilidade encontrada',
+        description: 'Nenhuma habilidade corresponde aos filtros selecionados.',
+      },
       displayModes: {
         grid: 'Visualização em Grade',
         list: 'Visualização em Lista',

@@ -19,6 +19,6 @@ type Props = {
 }
 
 withDefaults(defineProps<Props>(), {
-  color: '#333333'
+  color: 'currentColor',
 })
 </script>

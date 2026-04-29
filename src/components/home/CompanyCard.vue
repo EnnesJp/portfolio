@@ -73,18 +73,18 @@ const formatPeriod = (company: Company): string => {
 
 <style scoped lang="scss">
 .company-card {
-  background: var(--color-surface);
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: var(--color-background);
+  border-radius: 12px;
+  padding: 24px;
   border: 1px solid var(--color-border);
-  transition: all 0.3s ease;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
   position: relative;
   overflow: hidden;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    border-color: var(--color-primary);
   }
 
   &::before {
@@ -243,7 +243,7 @@ const formatPeriod = (company: Company): string => {
 
 @media (max-width: 768px) {
   .company-card {
-    padding: 24px;
+    padding: 20px;
 
     &__header {
       gap: 16px;
